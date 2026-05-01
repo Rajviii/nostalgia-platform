@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,6 +34,13 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <div className="noise-overlay" />
+          <Toaster position="bottom-right" toastOptions={{
+            style: {
+              background: "hsl(var(--card))",
+              color: "hsl(var(--foreground))",
+              border: "1px border hsl(var(--border))",
+            }
+          }} />
           {children}
         </ThemeProvider>
       </body>

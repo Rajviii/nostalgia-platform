@@ -142,8 +142,7 @@
 }
 
 .paper-card {
-  @apply bg-card border border-border/40 shadow-sm transition-all duration-300 hover:shadow-md hover:border-border/60;
-  position: relative;
+  @apply relative bg-card border border-border/40 shadow-sm transition-all duration-300 hover:shadow-md hover:border-border/60;
 }
 
 .paper-card::after {
