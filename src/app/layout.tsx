@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
+import { AuthProvider } from "@/lib/auth-context";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,15 +34,17 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="noise-overlay" />
-          <Toaster position="bottom-right" toastOptions={{
-            style: {
-              background: "hsl(var(--card))",
-              color: "hsl(var(--foreground))",
-              border: "1px border hsl(var(--border))",
-            }
-          }} />
-          {children}
+          <AuthProvider>
+            <div className="noise-overlay" />
+            <Toaster position="bottom-right" toastOptions={{
+              style: {
+                background: "hsl(var(--card))",
+                color: "hsl(var(--foreground))",
+                border: "1px border hsl(var(--border))",
+              }
+            }} />
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

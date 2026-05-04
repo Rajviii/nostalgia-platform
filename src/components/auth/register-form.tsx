@@ -10,6 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Typography } from "@/components/ui/typography";
+import { useAuth } from "@/lib/auth-context";
+import { useRouter } from "next/navigation";
 
 const registerSchema = z.object({
   username: z.string().min(3, "Username must be at least 3 characters"),
@@ -26,6 +28,8 @@ interface RegisterFormProps {
 
 export function RegisterForm({ onSuccess, onToggleLogin }: RegisterFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuth();
+  const router = useRouter();
 
   const {
     register,
@@ -51,7 +55,9 @@ export function RegisterForm({ onSuccess, onToggleLogin }: RegisterFormProps) {
       }
 
       toast.success("Welcome to Aiglatson! Your journey begins.");
+      login(result.user);
       if (onSuccess) onSuccess();
+      router.push("/feed");
     } catch (error: any) {
       toast.error(error.message);
     } finally {
