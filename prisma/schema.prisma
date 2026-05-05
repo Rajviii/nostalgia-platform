@@ -64,6 +64,7 @@ model users {
   notifications_notifications_actor_idTousers notifications[] @relation("notifications_actor_idTousers")
   notifications_notifications_user_idTousers  notifications[] @relation("notifications_user_idTousers")
   posts                                       posts[]
+  time_capsules                               time_capsules[]
 }
 
 model notifications {
@@ -83,6 +84,24 @@ model notifications {
   @@index([created_at(sort: Desc)], map: "idx_notifications_created_at")
   @@index([is_read], map: "idx_notifications_is_read")
   @@index([user_id], map: "idx_notifications_user_id")
+}
+
+model time_capsules {
+  id             Int       @id @default(autoincrement())
+  user_id        Int
+  title          String?
+  content        String
+  media_url      String?
+  created_at     DateTime? @default(now()) @db.Timestamp(6)
+  unlock_at      DateTime  @db.Timestamp(6)
+  is_unlocked    Boolean?  @default(false)
+  is_public      Boolean?  @default(false)
+  allow_comments Boolean?  @default(true)
+  mood           String?
+  users          users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user")
+
+  @@index([unlock_at], map: "idx_unlock_time")
+  @@index([user_id], map: "idx_user_capsules")
 }
 
 enum notification_type {

@@ -46,6 +46,26 @@ export async function POST(request: Request) {
                 post_id: Number(post_id),
             }
         });
+
+        // Trigger Notification
+        const post = await prisma.posts.findUnique({
+            where: { id: Number(post_id) },
+            select: { user_id: true, title: true }
+        });
+
+        if (post && post.user_id) {
+            const { createNotification } = await import("@/lib/notifications");
+            await createNotification({
+                userId: post.user_id,
+                actorId: Number(user_id),
+                type: "like",
+                entityId: Number(post_id),
+                entityType: "post",
+                title: "New Like",
+                message: `liked your post: ${post.title}`
+            });
+        }
+
         return Response.json({ message: "Liked", liked: true, like: newLike }, { status: 201 });
     } catch (error) {
         console.error("Like error:", error);

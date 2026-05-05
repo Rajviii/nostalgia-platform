@@ -43,6 +43,25 @@ export async function POST(request: Request) {
             }
         });
 
+        // Trigger Notification
+        const post = await prisma.posts.findUnique({
+            where: { id: Number(post_id) },
+            select: { user_id: true, title: true }
+        });
+
+        if (post && post.user_id) {
+            const { createNotification } = await import("@/lib/notifications");
+            await createNotification({
+                userId: post.user_id,
+                actorId: Number(user_id),
+                type: "comment",
+                entityId: Number(post_id),
+                entityType: "post",
+                title: "New Comment",
+                message: `commented on your post "${post.title}": ${content.substring(0, 20)}${content.length > 20 ? "..." : ""}`
+            });
+        }
+
         return Response.json(newComment, { status: 201 });
     } catch (error) {
         console.error("Comment error:", error);
