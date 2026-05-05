@@ -41,3 +41,49 @@ export async function POST(request: Request) {
         );
     }
 }
+
+export async function PUT(request: Request) {
+    try {
+        const body = await request.json();
+
+        const { id, title, content, user_id, image_url } = body;
+
+        if (!id || !title || !content || !user_id) {
+            return Response.json(
+                { error: "Post ID, title, content, and user_id are required", },
+                { status: 400, }
+            );
+        }
+
+        // Optional: verify the user owns the post
+        const existingPost = await prisma.posts.findUnique({
+            where: { id: Number(id) }
+        });
+
+        if (!existingPost) {
+            return Response.json({ error: "Post not found" }, { status: 404 });
+        }
+
+        if (existingPost.user_id !== user_id) {
+            return Response.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const updatedPost = await prisma.posts.update({
+            where: { id: Number(id) },
+            data: {
+                title,
+                content,
+                image_url,
+            },
+        });
+
+        return Response.json(updatedPost, { status: 200, });
+    } catch (error) {
+        console.error(error);
+
+        return Response.json(
+            { error: "Something went wrong", },
+            { status: 500, }
+        );
+    }
+}

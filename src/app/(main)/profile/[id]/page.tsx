@@ -7,6 +7,7 @@ import { PostCard } from "@/components/feed/post-card";
 import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
+import { CreatePostModal } from "@/components/feed/create-post-modal";
 
 interface UserProfile {
   user: {
@@ -29,25 +30,26 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editingPost, setEditingPost] = useState<any | null>(null);
+
+  const fetchProfile = async () => {
+    try {
+      setIsLoading(true);
+      const res = await fetch(`/api/users/${userId}`);
+      if (!res.ok) {
+        if (res.status === 404) throw new Error("User not found");
+        throw new Error("Failed to load profile");
+      }
+      const data = await res.json();
+      setProfile(data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch(`/api/users/${userId}`);
-        if (!res.ok) {
-          if (res.status === 404) throw new Error("User not found");
-          throw new Error("Failed to load profile");
-        }
-        const data = await res.json();
-        setProfile(data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     if (userId) fetchProfile();
   }, [userId]);
 
@@ -124,7 +126,11 @@ export default function ProfilePage() {
       <div className="divide-y divide-border/50">
         {profile.posts.length > 0 ? (
           profile.posts.map(post => (
-            <PostCard key={post.id} post={post} />
+            <PostCard 
+              key={post.id} 
+              post={post}
+              onEdit={setEditingPost}
+            />
           ))
         ) : (
           <div className="p-12 text-center text-muted-foreground">
@@ -132,6 +138,16 @@ export default function ProfilePage() {
           </div>
         )}
       </div>
+
+      <CreatePostModal 
+        isOpen={!!editingPost} 
+        onClose={() => setEditingPost(null)}
+        initialData={editingPost}
+        onSuccess={() => {
+          setEditingPost(null);
+          fetchProfile(); // Reload to see updates
+        }}
+      />
     </div>
   );
 }

@@ -24,9 +24,10 @@ interface PostCardProps {
   };
   onLike?: (postId: number) => void;
   onCommentClick?: (postId: number) => void;
+  onEdit?: (post: any) => void;
 }
 
-export function PostCard({ post, onLike, onCommentClick }: PostCardProps) {
+export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps) {
   const { user } = useAuth();
   const [isLiked, setIsLiked] = useState(post.isLiked || false);
   const [likesCount, setLikesCount] = useState(post.likesCount);
@@ -57,6 +58,8 @@ export function PostCard({ post, onLike, onCommentClick }: PostCardProps) {
     }
   };
 
+  const isOwner = user?.id === post.user?.id;
+
   return (
     <article className="border-b border-border bg-card/50 p-6 transition-all hover:bg-card/80">
       <div className="flex items-start justify-between">
@@ -78,9 +81,11 @@ export function PostCard({ post, onLike, onCommentClick }: PostCardProps) {
             </p>
           </div>
         </div>
-        <Button variant="ghost" size="icon" className="text-muted-foreground">
-          <MoreHorizontal className="h-5 w-5" />
-        </Button>
+        {isOwner && onEdit && (
+          <Button variant="ghost" size="sm" onClick={() => onEdit(post)} className="text-muted-foreground hover:text-primary">
+            Edit
+          </Button>
+        )}
       </div>
 
       <div className="mt-4 space-y-3">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,9 +26,15 @@ interface CreatePostModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: () => void;
+  initialData?: {
+    id: number;
+    title: string;
+    content: string;
+    image_url: string | null;
+  } | null;
 }
 
-export function CreatePostModal({ isOpen, onClose, onSuccess }: CreatePostModalProps) {
+export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: CreatePostModalProps) {
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -37,10 +43,26 @@ export function CreatePostModal({ isOpen, onClose, onSuccess }: CreatePostModalP
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<PostValues>({
     resolver: zodResolver(postSchema),
+    defaultValues: initialData ? {
+      title: initialData.title,
+      content: initialData.content,
+      image_url: initialData.image_url || "",
+    } : undefined
   });
+
+  useEffect(() => {
+    if (initialData && isOpen) {
+      setValue("title", initialData.title);
+      setValue("content", initialData.content);
+      setValue("image_url", initialData.image_url || "");
+    } else if (!initialData && isOpen) {
+      reset();
+    }
+  }, [initialData, isOpen, setValue, reset]);
 
   const onSubmit = async (data: PostValues) => {
     if (!user) {
@@ -50,20 +72,27 @@ export function CreatePostModal({ isOpen, onClose, onSuccess }: CreatePostModalP
 
     setIsLoading(true);
     try {
-      const response = await fetch("/api/posts", {
-        method: "POST",
+      const isEditing = !!initialData;
+      const url = "/api/posts";
+      const method = isEditing ? "PUT" : "POST";
+      
+      const payload = {
+        ...data,
+        user_id: user.id,
+        ...(isEditing && { id: initialData.id })
+      };
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...data,
-          user_id: user.id,
-        }),
+        body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create post");
+        throw new Error(isEditing ? "Failed to update post" : "Failed to create post");
       }
 
-      toast.success("Memory preserved successfully.");
+      toast.success(isEditing ? "Memory updated successfully." : "Memory preserved successfully.");
       reset();
       onClose();
       if (onSuccess) onSuccess();
@@ -77,11 +106,11 @@ export function CreatePostModal({ isOpen, onClose, onSuccess }: CreatePostModalP
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[525px] glass border border-border">
+      <DialogContent className="sm:max-w-[525px] bg-background text-foreground border border-border shadow-xl">
         <DialogHeader>
-          <DialogTitle className="font-serif text-2xl">Pen a Memory</DialogTitle>
+          <DialogTitle className="font-serif text-2xl">{initialData ? "Edit Memory" : "Pen a Memory"}</DialogTitle>
           <DialogDescription>
-            Share a moment, a thought, or a piece of history.
+            {initialData ? "Make changes to your shared moment." : "Share a moment, a thought, or a piece of history."}
           </DialogDescription>
         </DialogHeader>
 
@@ -127,7 +156,7 @@ export function CreatePostModal({ isOpen, onClose, onSuccess }: CreatePostModalP
             </Button>
             <Button type="submit" className="rounded-full px-6" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Publish
+              {initialData ? "Save Changes" : "Publish"}
             </Button>
           </div>
         </form>

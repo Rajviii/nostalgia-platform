@@ -5,6 +5,7 @@ import { PostCard } from "@/components/feed/post-card";
 import { Typography } from "@/components/ui/typography";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
+import { CreatePostModal } from "@/components/feed/create-post-modal";
 
 interface Post {
   id: number;
@@ -21,6 +22,7 @@ export default function FeedPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
   const { user } = useAuth();
 
   const fetchPosts = async () => {
@@ -66,11 +68,23 @@ export default function FeedPage() {
           {posts.map((post) => (
             <PostCard 
               key={post.id} 
-              post={post} 
+              post={post}
+              onEdit={setEditingPost}
             />
           ))}
         </div>
       )}
+
+      {/* Edit Modal */}
+      <CreatePostModal 
+        isOpen={!!editingPost} 
+        onClose={() => setEditingPost(null)}
+        initialData={editingPost}
+        onSuccess={() => {
+          setEditingPost(null);
+          fetchPosts(); // Reload to see updates
+        }}
+      />
     </div>
   );
 }
