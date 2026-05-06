@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import { PostCard } from "@/components/feed/post-card";
 import { Typography } from "@/components/ui/typography";
-import { Loader2 } from "lucide-react";
+import { Loader2, ChevronDown } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { CreatePostModal } from "@/components/feed/create-post-modal";
+import { Button } from "@/components/ui/button";
 
 interface Post {
   id: number;
@@ -45,8 +46,23 @@ export default function FeedPage() {
 
   return (
     <div className="w-full">
-      <div className="sticky top-0 z-10 glass border-b border-border p-4 md:p-6 flex items-center justify-between">
-        <Typography variant="h3" serif>Home</Typography>
+      <div className="sticky top-0 z-20 bg-background px-8 pt-8 pb-6 flex flex-col gap-6 border-b border-border/40">
+        <div>
+          <Typography variant="h1" serif className="text-3xl font-bold mb-1">Home</Typography>
+          <p className="text-muted-foreground text-sm">Your memories, your story.</p>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 bg-[#efede6]/50 p-1 rounded-full border border-border/40">
+            <button className="px-6 py-2 rounded-full text-sm font-medium bg-[#222] text-white shadow-sm transition-all">All</button>
+            <button className="px-6 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-all">Following</button>
+            <button className="px-6 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground transition-all">Saved</button>
+          </div>
+          
+          <Button variant="outline" className="rounded-full bg-transparent border-border/60 gap-2 h-10 px-5 font-medium hover:bg-[#efede6]/50">
+            Latest <ChevronDown className="w-4 h-4 text-muted-foreground" />
+          </Button>
+        </div>
       </div>
 
       {isLoading ? (
@@ -64,7 +80,7 @@ export default function FeedPage() {
           <p className="mt-2">Be the first to pen something beautiful.</p>
         </div>
       ) : (
-        <div className="divide-y divide-border/50">
+        <div className="flex flex-col gap-6 p-8 pt-6">
           {posts.map((post) => (
             <PostCard 
               key={post.id} 

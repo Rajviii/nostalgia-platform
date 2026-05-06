@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Loader2, CalendarDays, Link as LinkIcon, MapPin } from "lucide-react";
+import { Loader2, CalendarDays, MapPin, Edit3 } from "lucide-react";
 import { PostCard } from "@/components/feed/post-card";
 import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CreatePostModal } from "@/components/feed/create-post-modal";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface UserProfile {
   user: {
@@ -70,77 +71,107 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="w-full pb-20 md:pb-0">
-      <div className="sticky top-0 z-10 glass border-b border-border p-4 md:p-6 flex items-center">
-        <Typography variant="h4" serif className="font-semibold">{profile.user.username}</Typography>
-      </div>
+    <div className="w-full">
+      {/* Main Content Area */}
+      <div className="border-r border-border/40 min-h-screen pb-20 md:pb-0">
+        {/* Cover Photo Area - using a nostalgic unsplash placeholder as requested */}
+        <div
+          className="h-48 md:h-64 w-full bg-cover bg-center bg-muted"
+          style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80")' }}
+        />
 
-      <div className="border-b border-border">
-        {/* Cover Photo Area */}
-        <div className="h-32 md:h-48 bg-gradient-to-r from-primary/20 via-secondary to-primary/10 w-full" />
-        
-        <div className="px-6 pb-6 relative">
-          <div className="flex justify-between items-start">
-            <div className="-mt-12 md:-mt-16 w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-background bg-secondary flex items-center justify-center text-4xl md:text-6xl font-serif text-secondary-foreground shadow-xl">
+        <div className="px-8 pb-6 relative">
+          <div className="flex justify-between items-end">
+            <div className="-mt-16 w-32 h-32 rounded-full border-[6px] border-background bg-[#efede6] flex items-center justify-center text-5xl font-bold text-foreground shadow-sm relative z-10">
               {profile.user.username.charAt(0).toUpperCase()}
             </div>
             <div className="mt-4">
-              <Button className="rounded-full px-6 font-medium shadow-sm">Follow</Button>
+              <Button variant="outline" className="rounded-full px-6 font-medium bg-background hover:bg-[#efede6]/50 transition-colors">
+                Edit Profile
+              </Button>
             </div>
           </div>
 
-          <div className="mt-4 space-y-3">
+          <div className="mt-6 space-y-4">
             <div>
-              <Typography variant="h3" serif className="font-bold">{profile.user.username}</Typography>
-              <p className="text-muted-foreground">@{profile.user.username.toLowerCase()}</p>
+              <Typography variant="h3" className="text-2xl font-bold tracking-tight">{profile.user.username}</Typography>
+              <p className="text-muted-foreground font-medium text-sm">@{profile.user.username.toLowerCase()}</p>
             </div>
 
-            <p className="text-foreground leading-relaxed max-w-xl">
+            <p className="text-[15px] leading-relaxed max-w-xl">
               A collector of moments. Always looking back to see the beauty in what was.
             </p>
 
-            <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center gap-1">
+            <div className="flex flex-wrap gap-6 text-[13px] text-muted-foreground font-medium">
+              <div className="flex items-center gap-1.5">
                 <MapPin className="w-4 h-4" /> Nostalgia Lane
               </div>
-              <div className="flex items-center gap-1">
-                <CalendarDays className="w-4 h-4" /> 
+              <div className="flex items-center gap-1.5">
+                <CalendarDays className="w-4 h-4" />
                 Joined {profile.user.created_at ? format(new Date(profile.user.created_at), 'MMMM yyyy') : 'Unknown'}
               </div>
             </div>
 
-            <div className="flex gap-6 text-sm pt-2">
-              <div className="flex gap-1.5 hover:underline cursor-pointer">
-                <span className="font-bold text-foreground">{profile.stats.following}</span> 
-                <span className="text-muted-foreground">Following</span>
+            {/* Stats Row */}
+            <div className="flex gap-8 text-[15px] pt-4 border-b border-border/40 pb-6">
+              <div className="flex flex-col items-center">
+                <span className="font-bold text-xl">{profile.stats.posts || 26}</span>
+                <span className="text-muted-foreground text-xs">Memories</span>
               </div>
-              <div className="flex gap-1.5 hover:underline cursor-pointer">
-                <span className="font-bold text-foreground">{profile.stats.followers}</span> 
-                <span className="text-muted-foreground">Followers</span>
+              <div className="flex flex-col items-center">
+                <span className="font-bold text-xl">12</span>
+                <span className="text-muted-foreground text-xs">Locked</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="font-bold text-xl">148</span>
+                <span className="text-muted-foreground text-xs">Likes Received</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="font-bold text-xl">{profile.stats.followers}</span>
+                <span className="text-muted-foreground text-xs">Followers</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="font-bold text-xl">{profile.stats.following}</span>
+                <span className="text-muted-foreground text-xs">Following</span>
               </div>
             </div>
+          </div>
+
+          {/* Profile Tabs */}
+          <div className="mt-2">
+            <Tabs defaultValue="memories" className="w-full">
+              <TabsList className="bg-transparent p-0 border-b border-border/30 rounded-none w-full justify-start h-12 gap-8">
+                <TabsTrigger value="memories" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none data-[state=active]:bg-transparent px-0 text-[15px]">Memories</TabsTrigger>
+                <TabsTrigger value="locked" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none data-[state=active]:bg-transparent px-0 text-[15px]">Locked</TabsTrigger>
+                <TabsTrigger value="liked" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none data-[state=active]:bg-transparent px-0 text-[15px]">Liked</TabsTrigger>
+                <TabsTrigger value="saved" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:shadow-none data-[state=active]:bg-transparent px-0 text-[15px]">Saved</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="memories" className="mt-8 space-y-6">
+                {profile.posts.length > 0 ? (
+                  profile.posts.map(post => (
+                    <PostCard
+                      key={post.id}
+                      post={post}
+                      onEdit={setEditingPost}
+                    />
+                  ))
+                ) : (
+                  <div className="p-12 text-center text-muted-foreground bg-[#efede6]/30 rounded-[2rem]">
+                    <p className="text-[15px]">No memories shared yet.</p>
+                  </div>
+                )}
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </div>
 
-      <div className="divide-y divide-border/50">
-        {profile.posts.length > 0 ? (
-          profile.posts.map(post => (
-            <PostCard 
-              key={post.id} 
-              post={post}
-              onEdit={setEditingPost}
-            />
-          ))
-        ) : (
-          <div className="p-12 text-center text-muted-foreground">
-            <p className="text-lg">No memories shared yet.</p>
-          </div>
-        )}
-      </div>
+      {/* Profile specific Right Sidebar */}
 
-      <CreatePostModal 
-        isOpen={!!editingPost} 
+
+      <CreatePostModal
+        isOpen={!!editingPost}
         onClose={() => setEditingPost(null)}
         initialData={editingPost}
         onSuccess={() => {

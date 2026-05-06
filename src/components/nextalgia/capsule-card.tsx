@@ -48,52 +48,46 @@ export function CapsuleCard({ capsule, currentUserId }: CapsuleCardProps) {
 
     return (
         <div className={cn(
-            "group relative overflow-hidden rounded-3xl border transition-all duration-500",
+            "group relative overflow-hidden rounded-[2rem] border border-border/40 transition-all duration-500 shadow-sm",
             isLocked 
-                ? "bg-muted/40 border-muted-foreground/10 grayscale-[0.5] hover:grayscale-0" 
-                : "bg-card hover:shadow-2xl hover:shadow-primary/10 border-primary/10"
+                ? "bg-muted/10 grayscale-[0.2] hover:grayscale-0" 
+                : "bg-card hover:shadow-md"
         )}>
-            {/* Background Decorative Element */}
-            <div className={cn(
-                "absolute -right-10 -top-10 h-32 w-32 rounded-full blur-3xl opacity-20 transition-all duration-1000 group-hover:scale-150",
-                isLocked ? "bg-muted-foreground" : "bg-primary"
-            )} />
-
             <div className="relative p-6 space-y-4">
                 <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-3">
                         {isLocked ? (
-                            <div className="w-10 h-10 rounded-2xl bg-muted flex items-center justify-center text-muted-foreground animate-pulse">
-                                <Lock className="w-5 h-5" />
+                            <div className="w-10 h-10 rounded-full bg-[#efede6] flex items-center justify-center text-muted-foreground border border-border/50">
+                                <Lock className="w-4 h-4" />
                             </div>
                         ) : (
-                            <div className="w-10 h-10 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                                <Unlock className="w-5 h-5" />
+                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                                <Unlock className="w-4 h-4" />
                             </div>
                         )}
                         <div>
-                            <Typography variant="h4" className="text-sm font-bold leading-none">
+                            <Typography variant="h4" className="text-[15px] font-bold leading-none mb-1">
                                 {isLocked && !isOwner ? "Encrypted Memory" : (capsule.title || "Untitled Capsule")}
                             </Typography>
-                            <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
+                            <span className="text-[11px] text-muted-foreground uppercase tracking-wider font-bold">
                                 {capsule.mood || "Nostalgic"}
                             </span>
                         </div>
                     </div>
                     <div className="flex flex-col items-end gap-1">
                         {capsule.is_public ? (
-                            <Badge variant="outline" className="text-[10px] gap-1 rounded-full px-2 py-0">
-                                <Globe className="w-3 h-3" /> Public
-                            </Badge>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-[#efede6]/50 rounded-full text-[11px] font-bold text-muted-foreground border border-border/30">
+                                <Globe className="w-3 h-3" /> PUBLIC
+                            </div>
                         ) : (
-                            <Badge variant="secondary" className="text-[10px] gap-1 rounded-full px-2 py-0">
-                                <ShieldAlert className="w-3 h-3" /> Private
-                            </Badge>
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-muted/50 rounded-full text-[11px] font-bold text-muted-foreground border border-border/30">
+                                <ShieldAlert className="w-3 h-3" /> PRIVATE
+                            </div>
                         )}
                     </div>
                 </div>
 
-                <div className="min-h-[80px]">
+                <div className="min-h-[60px] pt-2">
                     {isLocked && !isOwner ? (
                         <div className="space-y-2">
                             <div className="h-4 w-full bg-muted-foreground/10 rounded animate-pulse" />
@@ -101,39 +95,41 @@ export function CapsuleCard({ capsule, currentUserId }: CapsuleCardProps) {
                         </div>
                     ) : (
                         <p className={cn(
-                            "text-sm leading-relaxed transition-all duration-700",
-                            isLocked ? "text-muted-foreground/60 italic" : "text-foreground"
+                            "text-[15px] leading-relaxed transition-all duration-700",
+                            isLocked ? "text-muted-foreground/80 italic" : "text-foreground"
                         )}>
                             {capsule.content}
                         </p>
                     )}
                 </div>
 
-                {capsule.media_url && !isLocked && (
-                    <div className="relative aspect-video rounded-2xl overflow-hidden border">
-                        <img 
-                            src={capsule.media_url} 
-                            alt="Capsule media" 
-                            className="object-cover w-full h-full"
-                        />
-                    </div>
-                )}
-
-                <div className="pt-4 border-t border-muted/50 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">
-                            {isLocked ? (
-                                <span className="font-mono text-primary font-bold">{timeLeft}</span>
-                            ) : (
-                                `Unlocked on ${format(new Date(capsule.unlock_at), "MMM d, yyyy")}`
-                            )}
+                <div className="pt-5 flex items-end justify-between">
+                    <div>
+                        <span className="text-[11px] uppercase tracking-wider font-bold text-muted-foreground block mb-1">
+                            {isLocked ? "Unlocks in" : "Unlocked"}
                         </span>
+                        {isLocked ? (
+                            <span className="font-mono text-xl font-bold tracking-tight text-foreground">{timeLeft}</span>
+                        ) : (
+                            <span className="font-bold text-primary">
+                                {format(new Date(capsule.unlock_at), "MMM d, yyyy")}
+                            </span>
+                        )}
                     </div>
-                    {!isLocked && (
-                        <div className="flex items-center gap-1 text-[10px] font-bold text-primary animate-bounce">
-                            <Sparkles className="w-3 h-3" />
-                            UNLOCKED
+                    
+                    {capsule.media_url && (
+                        <div className="w-16 h-16 rounded-[1rem] overflow-hidden border border-border/30 shadow-sm relative grayscale group-hover:grayscale-0 transition-all">
+                            {!isLocked || isOwner ? (
+                                <img 
+                                    src={capsule.media_url} 
+                                    alt="Capsule media" 
+                                    className="object-cover w-full h-full"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-muted flex items-center justify-center">
+                                    <Lock className="w-4 h-4 text-muted-foreground/50" />
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>

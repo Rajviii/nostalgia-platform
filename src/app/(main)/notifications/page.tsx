@@ -76,34 +76,37 @@ export default function NotificationsPage() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
                 <Loader2 className="w-10 h-10 animate-spin text-primary" />
-                <p className="text-muted-foreground animate-pulse font-medium">Gathering your memories...</p>
             </div>
         );
     }
 
     return (
-        <div className="max-w-3xl mx-auto p-6 md:p-8 space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b pb-6">
-                <div>
-                    <Typography variant="h2" serif className="text-3xl tracking-tight">Notifications</Typography>
-                    <p className="text-muted-foreground text-sm mt-1">Stay updated with your nostalgia network.</p>
+        <div className="w-full">
+            <div className="sticky top-0 z-20 bg-background px-8 pt-8 pb-6 flex flex-col gap-6 border-b border-border/40">
+                <div className="flex items-center justify-between">
+                    <div>
+                        <div className="flex items-center gap-2 mb-1">
+                            <Bell className="w-6 h-6 text-foreground" />
+                            <Typography variant="h1" serif className="text-3xl font-bold">Notifications</Typography>
+                        </div>
+                        <p className="text-muted-foreground text-sm">Stay updated with your nostalgia network.</p>
+                    </div>
+                    {notifications.some(n => !n.is_read) && (
+                        <Button 
+                            onClick={handleMarkAllAsRead}
+                            variant="outline"
+                            className="rounded-full gap-2 transition-colors group font-medium"
+                        >
+                            <CheckCheck className="w-4 h-4 text-foreground group-hover:scale-110 transition-transform" />
+                            Mark all as read
+                        </Button>
+                    )}
                 </div>
-                {notifications.some(n => !n.is_read) && (
-                    <Button 
-                        onClick={handleMarkAllAsRead}
-                        variant="outline"
-                        size="sm"
-                        className="rounded-full gap-2 hover:bg-primary/5 transition-colors group"
-                    >
-                        <CheckCheck className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
-                        Mark all as read
-                    </Button>
-                )}
-            </header>
+            </div>
 
-            <div className="space-y-4">
+            <div className="p-8 pt-6">
                 {notifications.length > 0 ? (
-                    <div className="grid gap-3">
+                    <div className="grid gap-4 max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700">
                         {notifications.map((notification) => (
                             <NotificationItem 
                                 key={notification.id} 
@@ -114,12 +117,12 @@ export default function NotificationsPage() {
                         ))}
                     </div>
                 ) : (
-                    <div className="flex flex-col items-center justify-center py-20 px-6 text-center bg-muted/20 rounded-3xl border border-dashed border-muted-foreground/20">
-                        <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-6">
+                    <div className="flex flex-col items-center justify-center py-20 px-6 text-center border border-border/40 rounded-[2rem] bg-[#efede6]/20 max-w-3xl mx-auto">
+                        <div className="w-20 h-20 rounded-full bg-[#efede6] flex items-center justify-center mb-6">
                             <Bell className="w-10 h-10 text-muted-foreground/30" />
                         </div>
-                        <Typography variant="h4" className="mb-2">Silence is golden</Typography>
-                        <p className="text-muted-foreground max-w-xs text-sm">
+                        <Typography variant="h4" className="mb-2 font-bold">Silence is golden</Typography>
+                        <p className="text-muted-foreground max-w-xs text-[15px]">
                             When someone interacts with your shared memories, we'll let you know right here.
                         </p>
                     </div>

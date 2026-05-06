@@ -107,7 +107,7 @@ export function NotificationBell() {
             
             <DropdownMenuContent 
                 align="end" 
-                className="w-[380px] p-0 overflow-hidden bg-background/95 backdrop-blur-md border shadow-2xl animate-in slide-in-from-top-2 duration-300"
+                className="w-[380px] p-0 overflow-hidden bg-background border border-border shadow-2xl animate-in slide-in-from-top-2 duration-300 z-50"
             >
                 <div className="flex items-center justify-between p-4 bg-muted/30 border-b">
                     <h2 className="font-bold text-lg">Notifications</h2>
