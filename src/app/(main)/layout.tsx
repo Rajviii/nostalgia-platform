@@ -56,9 +56,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                   Aiglatson<sup className="text-sm relative top-[-0.3em] font-sans">+</sup>
                 </Typography>
               </div>
+              <NotificationBell />
             </div>
             <div className="h-[calc(100vh-70px)] overflow-y-auto">
-              <Sidebar onCreatePost={() => {
+              <Sidebar hideLogo onCreatePost={() => {
                 setIsCreatePostOpen(true);
                 setIsMobileMenuOpen(false);
               }} />
@@ -67,17 +68,19 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         )}
 
         <main className="flex-1 flex flex-col min-w-0">
-          <div className="md:hidden flex items-center justify-between p-4 border-b border-border/40 sticky top-0 bg-background/95 backdrop-blur z-30">
-            <Typography as="span" variant="h3" serif className="text-2xl font-bold tracking-tight">
-              Aiglatson<sup className="text-sm relative top-[-0.3em] font-sans">+</sup>
-            </Typography>
-            <div className="flex items-center gap-2">
-              <NotificationBell />
-              <button onClick={() => setIsMobileMenuOpen(true)} className="p-2">
-                <Menu className="w-6 h-6" />
-              </button>
+          {!isMobileMenuOpen && (
+            <div className="md:hidden flex items-center justify-between p-4 border-b border-border/40 sticky top-0 bg-background z-30">
+              <Typography as="span" variant="h3" serif className="text-2xl font-bold tracking-tight">
+                Aiglatson<sup className="text-sm relative top-[-0.3em] font-sans">+</sup>
+              </Typography>
+              <div className="flex items-center gap-2">
+                <NotificationBell />
+                <button onClick={() => setIsMobileMenuOpen(true)} className="p-2">
+                  <Menu className="w-6 h-6" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="w-full">
             {/* Main Content Area */}
@@ -94,7 +97,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             {/* Header (Notifications & Avatar) */}
             <div className="flex items-center justify-end gap-4 mb-8">
               <NotificationBell />
-              <div className="w-10 h-10 rounded-full bg-card flex items-center justify-center text-sm font-bold text-foreground cursor-pointer shadow-sm border border-border/40 hover:bg-[#efede6]/50 transition-colors">
+              <div className="w-10 h-10 rounded-full bg-card flex items-center justify-center text-sm font-bold text-foreground cursor-pointer shadow-sm border border-border/40 hover:bg-secondary/50 transition-colors">
                 {user?.username?.[0].toUpperCase()}
               </div>
             </div>
@@ -112,11 +115,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                     <span className="text-sm font-medium text-muted-foreground">day streak</span>
                   </div>
                   <p className="text-center text-sm text-muted-foreground mt-2">
-                    You're on fire! 🔥<br />Keep it going!
+                    You&apos;re on fire! 🔥<br />Keep it going!
                   </p>
                   <div className="mt-6">
                     <p className="text-xs text-center text-muted-foreground mb-3 px-4">
-                      You're 8 memories away from your next Polaroid reward!
+                      You&apos;re 8 memories away from your next Polaroid reward!
                     </p>
                     <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
                       <div className="h-full bg-primary rounded-full w-[72%]" />
@@ -133,9 +136,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                     <p className="text-sm text-muted-foreground mt-1">meaningful actions</p>
                   </div>
                   <p className="text-sm text-muted-foreground flex items-center gap-2">
-                    You've contributed to planting 2 trees <Sprout className="w-4 h-4 text-green-500" />
+                    You&apos;ve contributed to planting 2 trees <Sprout className="w-4 h-4 text-green-500" />
                   </p>
-                  <Button variant="ghost" className="w-full mt-4 justify-between font-medium group hover:bg-[#efede6]">
+                  <Button variant="ghost" className="w-full mt-4 justify-between font-medium group hover:bg-secondary">
                     View impact
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Button>
@@ -156,7 +159,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                       </div>
                     ))}
                   </div>
-                  <Button variant="ghost" className="w-full mt-6 justify-between font-medium group hover:bg-[#efede6]">
+                  <Button variant="ghost" className="w-full mt-6 justify-between font-medium group hover:bg-secondary">
                     Explore all eras
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </Button>
@@ -179,10 +182,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         <span>180 / 250 XP</span>
                       </div>
                       <div className="h-2 w-full bg-muted rounded-full overflow-hidden">
-                        <div className="h-full bg-[#8b7355] rounded-full w-[72%]" />
+                        <div className="h-full bg-primary rounded-full w-[72%]" />
                       </div>
                     </div>
-                    <p className="text-xs text-muted-foreground mt-4 leading-relaxed bg-[#efede6]/50 p-3 rounded-xl border border-border/40">
+                    <p className="text-xs text-muted-foreground mt-4 leading-relaxed bg-secondary/30 p-3 rounded-xl border border-border/40">
                       Keep sharing memories to level up!
                     </p>
                   </div>
@@ -208,7 +211,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                         </div>
                       ))}
                     </div>
-                    <Button variant="ghost" className="w-full mt-6 font-medium group hover:bg-[#efede6]">
+                    <Button variant="ghost" className="w-full mt-6 font-medium group hover:bg-secondary">
                       View all insights
                     </Button>
                   </div>

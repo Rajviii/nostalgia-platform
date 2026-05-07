@@ -59,21 +59,21 @@ export default function NextalgiaPage() {
                     </div>
                     <CreateCapsuleModal onCapsuleCreated={fetchCapsules} />
                 </div>
-                
+
                 <div className="flex items-center gap-2 bg-[#efede6]/50 p-1 rounded-full border border-border/40 w-fit">
-                    <button 
+                    <button
                         onClick={() => setActiveTab('all')}
                         className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${activeTab === 'all' ? 'bg-[#222] text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                     >
                         All Stream
                     </button>
-                    <button 
+                    <button
                         onClick={() => setActiveTab('locked')}
                         className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${activeTab === 'locked' ? 'bg-[#222] text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                     >
                         Locked ({locked.length})
                     </button>
-                    <button 
+                    <button
                         onClick={() => setActiveTab('unlocked')}
                         className={`px-6 py-2 rounded-full text-sm font-medium transition-all gap-1 flex items-center ${activeTab === 'unlocked' ? 'bg-[#222] text-white shadow-sm' : 'text-muted-foreground hover:text-foreground'}`}
                     >
@@ -99,14 +99,22 @@ export default function NextalgiaPage() {
 
 function EmptyState() {
     return (
-        <div className="flex flex-col items-center justify-center py-32 px-6 text-center border border-border/40 rounded-[2rem] bg-[#efede6]/20">
-            <div className="w-20 h-20 rounded-full bg-[#efede6] flex items-center justify-center mb-6">
-                <Timer className="w-10 h-10 text-muted-foreground/50" />
+        <div className="flex flex-col items-center justify-center py-40 px-6 text-center border border-border/30 rounded-[3rem] bg-card/50 backdrop-blur-sm shadow-inner relative overflow-hidden group">
+            {/* Background decorative fragments */}
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none grid grid-cols-12 grid-rows-6 gap-px">
+                {Array.from({ length: 72 }).map((_, i) => (
+                    <div key={i} className="border border-foreground" />
+                ))}
             </div>
-            <Typography variant="h3" className="mb-2 font-bold text-xl">The void is waiting</Typography>
-            <p className="text-muted-foreground max-w-sm mb-8 text-[15px]">
-                You haven't sealed any memories yet. Start your Nextalgia journey by creating your first time capsule.
+            
+            <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center mb-8 shadow-xl border border-border/50 group-hover:scale-110 transition-transform duration-500">
+                <History className="w-10 h-10 text-primary" />
+            </div>
+            <Typography variant="h2" serif className="mb-3 font-bold text-3xl">The void is waiting</Typography>
+            <p className="text-muted-foreground max-w-sm mb-10 text-lg leading-relaxed">
+                You haven&apos;t sealed any memories yet. Start your journey into the future of the past.
             </p>
+            <div className="h-px w-20 bg-primary/20 mb-10" />
         </div>
     );
 }

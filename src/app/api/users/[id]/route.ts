@@ -4,6 +4,9 @@ export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
+    const { searchParams } = new URL(request.url);
+    const currentUserId = searchParams.get("currentUserId");
+
     try {
         const id = (await params).id;
         const userId = parseInt(id, 10);
@@ -40,6 +43,17 @@ export async function GET(
 
         const { password, ...safeUser } = user;
 
+        let isFollowing = false;
+        if (currentUserId && userId !== Number(currentUserId)) {
+            const follow = await prisma.follows.findFirst({
+                where: {
+                    follower_id: Number(currentUserId),
+                    following_id: userId
+                }
+            });
+            isFollowing = !!follow;
+        }
+
         // Format posts to match feed style
         const formattedPosts = user.posts.map(post => ({
             id: post.id,
@@ -50,6 +64,7 @@ export async function GET(
             user: post.users,
             commentsCount: post.comments.length,
             likesCount: post.likes.length,
+            isLiked: currentUserId ? post.likes.some(like => like.user_id === Number(currentUserId)) : false,
         }));
 
         return Response.json({
@@ -59,7 +74,8 @@ export async function GET(
                 followers: user._count.follows_follows_following_idTousers,
                 posts: formattedPosts.length,
             },
-            posts: formattedPosts
+            posts: formattedPosts,
+            isFollowing
         });
     } catch (error) {
         console.error("Profile error:", error);

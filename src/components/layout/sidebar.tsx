@@ -9,7 +9,7 @@ import { useAuth } from "@/lib/auth-context";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 
-export function Sidebar({ onCreatePost }: { onCreatePost?: () => void }) {
+export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () => void, hideLogo?: boolean }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
@@ -22,14 +22,16 @@ export function Sidebar({ onCreatePost }: { onCreatePost?: () => void }) {
   ];
 
   return (
-    <aside className="h-full w-full bg-background hidden md:flex flex-col py-4">
-      <div className="p-8 pb-4">
-        <Link href="/feed" className="flex items-center gap-1 group">
-          <Typography as="span" variant="h3" serif className="text-3xl font-bold tracking-tight">
-            Aiglatson<sup className="text-xl relative top-[-0.3em] font-sans">+</sup>
-          </Typography>
-        </Link>
-      </div>
+    <aside className="h-full w-full bg-background flex flex-col py-4">
+      {!hideLogo && (
+        <div className="p-8 pb-4">
+          <Link href="/feed" className="flex items-center gap-1 group">
+            <Typography as="span" variant="h3" serif className="text-3xl font-bold tracking-tight">
+              Aiglatson<sup className="text-xl relative top-[-0.3em] font-sans">+</sup>
+            </Typography>
+          </Link>
+        </div>
+      )}
 
       <div className="flex-1 px-4 py-4 space-y-1">
         {links.map((link) => {
@@ -41,8 +43,8 @@ export function Sidebar({ onCreatePost }: { onCreatePost?: () => void }) {
               className={cn(
                 "flex items-center gap-4 px-4 py-3 rounded-full transition-all duration-200 group font-medium",
                 isActive
-                  ? "bg-[#efede6] text-foreground shadow-sm"
-                  : "text-muted-foreground hover:bg-[#efede6]/50 hover:text-foreground"
+                  ? "bg-secondary text-foreground shadow-sm"
+                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
               )}
             >
               <link.icon className={cn("w-5 h-5 transition-transform group-hover:scale-110", isActive ? "stroke-[2.5px]" : "stroke-2")} />
@@ -54,7 +56,7 @@ export function Sidebar({ onCreatePost }: { onCreatePost?: () => void }) {
         <div className="pt-6 px-2">
           <Button
             onClick={onCreatePost}
-            className="w-full rounded-full py-6 text-[15px] font-medium bg-[#222] hover:bg-black text-white shadow-xl transition-all hover:-translate-y-0.5 flex justify-start pl-6 gap-3"
+            className="w-full rounded-full py-6 text-[15px] font-medium bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl transition-all hover:-translate-y-0.5 flex justify-start pl-6 gap-3"
           >
             <Plus className="w-5 h-5" />
             Write Memory
@@ -76,7 +78,7 @@ export function Sidebar({ onCreatePost }: { onCreatePost?: () => void }) {
       </div>
 
       <div className="p-4 mt-auto space-y-2">
-        <div className="flex items-center gap-4 px-4 py-3 text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-full hover:bg-[#efede6]/50">
+        <div className="flex items-center gap-4 px-4 py-3 text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-full hover:bg-secondary/50">
           <SunMoon className="w-5 h-5" />
           <div className="flex-1 flex justify-between items-center">
             <span className="text-[15px] font-medium">Theme</span>

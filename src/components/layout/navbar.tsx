@@ -41,7 +41,7 @@ export function Navbar() {
       <nav
         className={cn(
           "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-          scrolled ? "glass py-3 shadow-sm" : "bg-transparent py-5"
+          (scrolled || isOpen) ? "bg-background py-3 shadow-sm" : "bg-transparent py-5"
         )}
       >
         <div className="max-w-7xl mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -69,15 +69,15 @@ export function Navbar() {
 
           <div className="hidden md:flex items-center gap-4">
             <ModeToggle />
-            <Button 
-              variant="ghost" 
-              size="sm" 
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={() => openAuth("login")}
             >
               Login
             </Button>
-            <Button 
-              size="sm" 
+            <Button
+              size="sm"
               className="rounded-full px-6"
               onClick={() => openAuth("register")}
             >
@@ -97,48 +97,64 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={cn(
-            "md:hidden absolute top-full left-0 right-0 glass border-t border-border transition-all duration-300 overflow-hidden",
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-          )}
-        >
-          <div className="px-4 py-6 flex flex-col gap-4">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="text-lg font-medium text-foreground/70 hover:text-primary transition-colors"
-              >
-                {link.name}
+        {/* Mobile Menu Overlay */}
+        {isOpen && (
+          <div className="md:hidden fixed inset-0 z-[80] bg-background flex flex-col">
+            <div className="p-4 border-b border-border flex items-center justify-between">
+              <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2 group">
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-serif text-xl font-bold">
+                  A
+                </div>
+                <Typography as="span" variant="large" serif className="text-2xl tracking-tight">
+                  Aiglatson
+                </Typography>
               </Link>
-            ))}
-            <hr className="border-border/50" />
-            <div className="flex flex-col gap-3">
-              <Button 
-                variant="outline" 
-                className="w-full justify-center"
-                onClick={() => openAuth("login")}
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 text-foreground focus:outline-none"
               >
-                Login
-              </Button>
-              <Button 
-                className="w-full justify-center"
-                onClick={() => openAuth("register")}
-              >
-                Get Started
-              </Button>
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            <div className="flex-1 px-4 py-8 flex flex-col gap-6 overflow-y-auto">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className="text-2xl font-serif font-bold text-foreground hover:text-primary transition-colors border-b border-border/40 pb-4"
+                >
+                  {link.name}
+                </Link>
+              ))}
+
+              <div className="mt-auto flex flex-col gap-4 pb-8">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full justify-center py-6 text-lg rounded-xl"
+                  onClick={() => openAuth("login")}
+                >
+                  Login
+                </Button>
+                <Button
+                  size="lg"
+                  className="w-full justify-center py-6 text-lg rounded-xl"
+                  onClick={() => openAuth("register")}
+                >
+                  Get Started
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </nav>
 
-      <AuthModal 
-        isOpen={authModalOpen} 
-        onOpenChange={setAuthModalOpen} 
-        defaultMode={authMode} 
+      <AuthModal
+        isOpen={authModalOpen}
+        onOpenChange={setAuthModalOpen}
+        defaultMode={authMode}
       />
     </>
   );

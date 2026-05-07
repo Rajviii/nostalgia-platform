@@ -123,7 +123,7 @@ export function Hero() {
                     className="object-cover sepia-[0.3]"
                   />
                 </div>
-                <div className="mt-4 font-serif text-zinc-500 text-sm italic">Grandpa's Leica</div>
+                <div className="mt-4 font-serif text-zinc-500 text-sm italic">Grandpa&apos;s Leica</div>
               </motion.div>
 
               {/* Front Polaroid */}

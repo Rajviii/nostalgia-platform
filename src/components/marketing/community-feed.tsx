@@ -42,7 +42,7 @@ export function CommunityFeed() {
             A community built on <span className="text-primary italic">shared feelings</span>
           </Typography>
           <Typography variant="lead" className="mb-8 text-muted-foreground">
-            Aiglatson isn't just about the past; it's about the people who remember it. Join discussions, share your own variations of stories, and realize you weren't the only one who felt that way.
+            Aiglatson isn&apos;t just about the past; it&apos;s about the people who remember it. Join discussions, share your own variations of stories, and realize you weren&apos;t the only one who felt that way.
           </Typography>
 
           <div className="space-y-6">

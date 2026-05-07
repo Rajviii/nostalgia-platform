@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { CreatePostModal } from "@/components/feed/create-post-modal";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/lib/auth-context";
+import { cn } from "@/lib/utils";
 
 interface UserProfile {
   user: {
@@ -28,21 +30,25 @@ interface UserProfile {
 export default function ProfilePage() {
   const params = useParams();
   const userId = params.id;
+  const { user } = useAuth();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [editingPost, setEditingPost] = useState<any | null>(null);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [isFollowLoading, setIsFollowLoading] = useState(false);
 
   const fetchProfile = async () => {
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/users/${userId}`);
+      const res = await fetch(`/api/users/${userId}?currentUserId=${user?.id || ''}`);
       if (!res.ok) {
         if (res.status === 404) throw new Error("User not found");
         throw new Error("Failed to load profile");
       }
       const data = await res.json();
       setProfile(data);
+      setIsFollowing(data.isFollowing);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -50,9 +56,47 @@ export default function ProfilePage() {
     }
   };
 
+  const handleFollow = async () => {
+    if (!user || isFollowLoading || !profile) return;
+
+    setIsFollowLoading(true);
+    const newFollowState = !isFollowing;
+    setIsFollowing(newFollowState);
+
+    // Optimistic update of followers count
+    setProfile(prev => prev ? {
+      ...prev,
+      stats: {
+        ...prev.stats,
+        followers: newFollowState ? prev.stats.followers + 1 : prev.stats.followers - 1
+      }
+    } : null);
+
+    try {
+      await fetch('/api/follows', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ followerId: user.id, followingId: userId })
+      });
+    } catch (error) {
+      console.error(error);
+      setIsFollowing(!newFollowState);
+      // Revert optimistic update
+      setProfile(prev => prev ? {
+        ...prev,
+        stats: {
+          ...prev.stats,
+          followers: !newFollowState ? prev.stats.followers + 1 : prev.stats.followers - 1
+        }
+      } : null);
+    } finally {
+      setIsFollowLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (userId) fetchProfile();
-  }, [userId]);
+  }, [userId, user?.id]);
 
   if (isLoading) {
     return (
@@ -86,9 +130,23 @@ export default function ProfilePage() {
               {profile.user.username.charAt(0).toUpperCase()}
             </div>
             <div className="mt-4">
-              <Button variant="outline" className="rounded-full px-6 font-medium bg-background hover:bg-[#efede6]/50 transition-colors">
-                Edit Profile
-              </Button>
+              {profile.user.id !== user?.id ? (
+                <Button
+                  onClick={handleFollow}
+                  disabled={isFollowLoading}
+                  variant={isFollowing ? "outline" : "default"}
+                  className={cn(
+                    "rounded-full px-8 font-bold transition-all",
+                    isFollowing ? "bg-secondary hover:bg-secondary/80" : "bg-primary hover:bg-primary/90"
+                  )}
+                >
+                  {isFollowLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : isFollowing ? "Following" : "Follow"}
+                </Button>
+              ) : (
+                <Button variant="outline" className="rounded-full px-6 font-medium bg-background hover:bg-secondary transition-colors">
+                  Edit Profile
+                </Button>
+              )}
             </div>
           </div>
 
@@ -157,7 +215,7 @@ export default function ProfilePage() {
                     />
                   ))
                 ) : (
-                  <div className="p-12 text-center text-muted-foreground bg-[#efede6]/30 rounded-[2rem]">
+                  <div className="p-12 text-center text-muted-foreground bg-secondary/30 rounded-[2rem]">
                     <p className="text-[15px]">No memories shared yet.</p>
                   </div>
                 )}

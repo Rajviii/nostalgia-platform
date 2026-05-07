@@ -46,17 +46,17 @@ export function CTASection() {
               Join thousands of others who are already rediscovering their past. Your first memory is waiting to be shared.
             </Typography>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button 
-                size="lg" 
-                variant="secondary" 
+              <Button
+                size="lg"
+                variant="secondary"
                 className="rounded-full px-10 text-primary font-bold"
                 onClick={() => openAuth("register")}
               >
                 Join Community
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
+              <Button
+                size="lg"
+                variant="outline"
                 className="rounded-full px-10 border-white/20 text-white hover:bg-white/10 hover:text-white"
                 onClick={() => openAuth("login")}
               >
@@ -64,16 +64,16 @@ export function CTASection() {
               </Button>
             </div>
             <Typography variant="small" className="mt-8 text-primary-foreground/60 italic">
-              "We didn't realize we were making memories, we just knew we were having fun."
+              &quot;We didn&apos;t realize we were making memories, we just knew we were having fun.&quot;
             </Typography>
           </div>
         </motion.div>
       </Section>
 
-      <AuthModal 
-        isOpen={authModalOpen} 
-        onOpenChange={setAuthModalOpen} 
-        defaultMode={authMode} 
+      <AuthModal
+        isOpen={authModalOpen}
+        onOpenChange={setAuthModalOpen}
+        defaultMode={authMode}
       />
     </>
   );
