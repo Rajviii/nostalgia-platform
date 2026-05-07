@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { useAuth } from "@/lib/auth-context";
-import { 
-    Dialog, 
-    DialogContent, 
-    DialogHeader, 
-    DialogTitle, 
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
     DialogTrigger,
-    DialogDescription 
+    DialogDescription
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -88,22 +88,22 @@ export function CreateCapsuleModal({ onCapsuleCreated }: { onCapsuleCreated: () 
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor="title" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Title (Optional)</Label>
-                            <Input 
+                            <Input
                                 id="title"
                                 placeholder="A Message from the Past..."
                                 value={formData.title}
-                                onChange={(e) => setFormData({...formData, title: e.target.value})}
+                                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                 className="bg-muted/30 border-none rounded-xl focus-visible:ring-primary"
                             />
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="content" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Your Memory</Label>
-                            <Textarea 
+                            <Textarea
                                 id="content"
                                 placeholder="What should not be forgotten?"
                                 value={formData.content}
-                                onChange={(e) => setFormData({...formData, content: e.target.value})}
+                                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                 className="min-h-[120px] bg-muted/30 border-none rounded-xl focus-visible:ring-primary resize-none"
                             />
                         </div>
@@ -111,41 +111,41 @@ export function CreateCapsuleModal({ onCapsuleCreated }: { onCapsuleCreated: () 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="unlock" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Unlock Time</Label>
-                                <Input 
+                                <Input
                                     id="unlock"
                                     type="datetime-local"
                                     value={formData.unlockAt}
-                                    onChange={(e) => setFormData({...formData, unlockAt: e.target.value})}
+                                    onChange={(e) => setFormData({ ...formData, unlockAt: e.target.value })}
                                     className="bg-muted/30 border-none rounded-xl focus-visible:ring-primary"
                                 />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor="mood" className="text-xs uppercase tracking-widest font-bold text-muted-foreground">Mood</Label>
-                                <Input 
+                                <Input
                                     id="mood"
                                     placeholder="Nostalgic, Happy..."
                                     value={formData.mood}
-                                    onChange={(e) => setFormData({...formData, mood: e.target.value})}
+                                    onChange={(e) => setFormData({ ...formData, mood: e.target.value })}
                                     className="bg-muted/30 border-none rounded-xl focus-visible:ring-primary"
                                 />
                             </div>
                         </div>
 
                         <div className="flex gap-4 items-center pt-2">
-                            <Button 
+                            <Button
                                 type="button"
                                 variant={formData.isPublic ? "default" : "outline"}
                                 size="sm"
-                                onClick={() => setFormData({...formData, isPublic: true})}
+                                onClick={() => setFormData({ ...formData, isPublic: true })}
                                 className="rounded-full gap-2 flex-1"
                             >
                                 <Globe className="w-4 h-4" /> Public
                             </Button>
-                            <Button 
+                            <Button
                                 type="button"
                                 variant={!formData.isPublic ? "default" : "outline"}
                                 size="sm"
-                                onClick={() => setFormData({...formData, isPublic: false})}
+                                onClick={() => setFormData({ ...formData, isPublic: false })}
                                 className="rounded-full gap-2 flex-1"
                             >
                                 <Shield className="w-4 h-4" /> Private
@@ -153,8 +153,8 @@ export function CreateCapsuleModal({ onCapsuleCreated }: { onCapsuleCreated: () 
                         </div>
                     </div>
 
-                    <Button 
-                        type="submit" 
+                    <Button
+                        type="submit"
                         disabled={isLoading}
                         className="w-full rounded-full py-6 text-lg font-bold shadow-xl shadow-primary/20"
                     >

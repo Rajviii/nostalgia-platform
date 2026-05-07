@@ -24,7 +24,7 @@ export function NotificationBell() {
 
     const fetchNotifications = useCallback(async () => {
         if (!user?.id) return;
-        
+
         try {
             const res = await fetch(`/api/notifications?userId=${user.id}`);
             const data = await res.json();
@@ -53,7 +53,7 @@ export function NotificationBell() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ notificationId: id })
             });
-            setNotifications(prev => 
+            setNotifications(prev =>
                 prev.map(n => n.id === id ? { ...n, is_read: true } : n)
             );
             setUnreadCount(prev => Math.max(0, prev - 1));
@@ -96,7 +96,7 @@ export function NotificationBell() {
                         unreadCount > 0 && "text-primary animate-pulse-slow"
                     )} />
                     {unreadCount > 0 && (
-                        <Badge 
+                        <Badge
                             className="absolute -top-1 -right-1 w-5 h-5 flex items-center justify-center p-0 text-[10px] bg-primary text-primary-foreground border-2 border-background animate-in zoom-in"
                         >
                             {unreadCount > 9 ? "9+" : unreadCount}
@@ -104,17 +104,17 @@ export function NotificationBell() {
                     )}
                 </Button>
             </DropdownMenuTrigger>
-            
-            <DropdownMenuContent 
-                align="end" 
+
+            <DropdownMenuContent
+                align="end"
                 className="w-[380px] p-0 overflow-hidden bg-background border border-border shadow-2xl animate-in slide-in-from-top-2 duration-300 z-50"
             >
                 <div className="flex items-center justify-between p-4 bg-muted/30 border-b">
                     <h2 className="font-bold text-lg">Notifications</h2>
                     {unreadCount > 0 && (
-                        <Button 
-                            variant="ghost" 
-                            size="sm" 
+                        <Button
+                            variant="ghost"
+                            size="sm"
                             onClick={handleMarkAllAsRead}
                             className="h-8 text-xs gap-1.5 hover:bg-primary/10 hover:text-primary transition-colors"
                         >
@@ -133,8 +133,8 @@ export function NotificationBell() {
                     ) : notifications.length > 0 ? (
                         <div className="space-y-1">
                             {notifications.map((notification) => (
-                                <NotificationItem 
-                                    key={notification.id} 
+                                <NotificationItem
+                                    key={notification.id}
                                     notification={notification}
                                     onMarkAsRead={handleMarkAsRead}
                                     onDelete={handleDelete}

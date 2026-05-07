@@ -27,7 +27,7 @@ export function NotificationItem({ notification, onMarkAsRead, onDelete }: Notif
     const actorName = notification.users_notifications_actor_idTousers?.username || "Someone";
 
     return (
-        <div 
+        <div
             className={cn(
                 "group relative flex gap-4 p-5 transition-all hover:bg-muted/30 rounded-[1.5rem] border border-border/40",
                 !notification.is_read ? "bg-[#efede6]/50" : "bg-card"
@@ -42,14 +42,14 @@ export function NotificationItem({ notification, onMarkAsRead, onDelete }: Notif
                     {getIcon()}
                 </div>
             </div>
-            
+
             <div className="flex-1 min-w-0 flex flex-col justify-center">
                 <div className="flex items-start justify-between gap-2">
                     <p className="text-[15px] leading-tight">
                         <span className="font-bold text-foreground">{actorName}</span>{" "}
                         <span className="text-muted-foreground">{notification.message}</span>
                     </p>
-                    <button 
+                    <button
                         onClick={(e) => {
                             e.stopPropagation();
                             onDelete(notification.id);
@@ -59,7 +59,7 @@ export function NotificationItem({ notification, onMarkAsRead, onDelete }: Notif
                         <Trash2 className="w-4 h-4" />
                     </button>
                 </div>
-                
+
                 <p className="text-[11px] text-muted-foreground mt-1.5 flex items-center gap-1.5 font-medium uppercase tracking-wider">
                     {formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}
                     {!notification.is_read && (

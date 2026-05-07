@@ -101,7 +101,7 @@ export function LoginForm({ onSuccess, onToggleRegister }: LoginFormProps) {
         </Button>
       </form>
       <div className="text-center text-sm">
-        <span className="text-muted-foreground">Don't have an account? </span>
+        <span className="text-muted-foreground">Don&apos;t have an account? </span>
         <button
           onClick={onToggleRegister}
           className="text-primary hover:underline font-bold"

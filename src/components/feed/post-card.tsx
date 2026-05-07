@@ -41,7 +41,7 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
 
   const handleLike = async () => {
     if (!user || isLiking) return;
-    
+
     setIsLiking(true);
     setIsLiked(!isLiked);
     setLikesCount(prev => isLiked ? prev - 1 : prev + 1);
@@ -83,9 +83,9 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
           </div>
         </div>
         <div className="flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground hover:bg-[#efede6]/50 rounded-full h-8 w-8">
-              <MoreHorizontal className="w-5 h-5" />
-            </Button>
+          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground hover:bg-[#efede6]/50 rounded-full h-8 w-8">
+            <MoreHorizontal className="w-5 h-5" />
+          </Button>
         </div>
       </div>
 
@@ -97,15 +97,15 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
 
         {/* Static Tags based on design */}
         <div className="flex flex-wrap gap-2 pt-2">
-            <span className="px-3 py-1.5 bg-[#efede6]/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Sports</span>
-            <span className="px-3 py-1.5 bg-[#efede6]/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Nostalgia</span>
-            <span className="px-3 py-1.5 bg-[#efede6]/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">2016</span>
+          <span className="px-3 py-1.5 bg-[#efede6]/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Sports</span>
+          <span className="px-3 py-1.5 bg-[#efede6]/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Nostalgia</span>
+          <span className="px-3 py-1.5 bg-[#efede6]/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">2016</span>
         </div>
 
         {post.image_url && (
           <div className="relative mt-4 overflow-hidden rounded-[1.5rem] border border-border/30 bg-muted/50 aspect-video group/img shadow-sm">
-            <img 
-              src={post.image_url} 
+            <img
+              src={post.image_url}
               alt={post.title}
               className="object-cover w-full h-full transition-transform duration-700 group-hover/img:scale-105"
               onError={(e) => {
@@ -117,8 +117,8 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
       </div>
 
       <div className="mt-6 flex items-center gap-6 text-muted-foreground pt-4 border-t border-border/30">
-        <button 
-          onClick={handleLike} 
+        <button
+          onClick={handleLike}
           disabled={isLiking}
           className={cn(
             "flex items-center gap-2 transition-all duration-300 hover:text-rose-500 hover:bg-rose-50 px-3 py-1.5 rounded-full -ml-3",
@@ -129,7 +129,7 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
           <span className="text-sm font-bold">{likesCount}</span>
         </button>
 
-        <button 
+        <button
           onClick={() => {
             setShowComments(!showComments);
             if (onCommentClick) onCommentClick(post.id);
@@ -150,18 +150,18 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
 
       {showComments && (
         <div className="mt-4 pt-4 border-t border-border/30 animate-in slide-in-from-top-4 fade-in duration-500">
-            <Typography variant="h4" className="text-sm font-bold mb-4 flex items-center gap-2">
-                Comments
-                <span className="text-xs font-normal text-muted-foreground">({commentsCount})</span>
-            </Typography>
-            <CommentInput 
-                postId={post.id} 
-                onCommentAdded={() => {
-                    setRefreshComments(prev => prev + 1);
-                    setCommentsCount(prev => prev + 1);
-                }} 
-            />
-            <CommentList postId={post.id} refreshTrigger={refreshComments} />
+          <Typography variant="h4" className="text-sm font-bold mb-4 flex items-center gap-2">
+            Comments
+            <span className="text-xs font-normal text-muted-foreground">({commentsCount})</span>
+          </Typography>
+          <CommentInput
+            postId={post.id}
+            onCommentAdded={() => {
+              setRefreshComments(prev => prev + 1);
+              setCommentsCount(prev => prev + 1);
+            }}
+          />
+          <CommentList postId={post.id} refreshTrigger={refreshComments} />
         </div>
       )}
     </article>

@@ -49,8 +49,8 @@ export function CapsuleCard({ capsule, currentUserId }: CapsuleCardProps) {
     return (
         <div className={cn(
             "group relative overflow-hidden rounded-[2rem] border border-border/40 transition-all duration-500 shadow-sm",
-            isLocked 
-                ? "bg-muted/10 grayscale-[0.2] hover:grayscale-0" 
+            isLocked
+                ? "bg-muted/10 grayscale-[0.2] hover:grayscale-0"
                 : "bg-card hover:shadow-md"
         )}>
             <div className="relative p-6 space-y-4">
@@ -116,13 +116,13 @@ export function CapsuleCard({ capsule, currentUserId }: CapsuleCardProps) {
                             </span>
                         )}
                     </div>
-                    
+
                     {capsule.media_url && (
                         <div className="w-16 h-16 rounded-[1rem] overflow-hidden border border-border/30 shadow-sm relative grayscale group-hover:grayscale-0 transition-all">
                             {!isLocked || isOwner ? (
-                                <img 
-                                    src={capsule.media_url} 
-                                    alt="Capsule media" 
+                                <img
+                                    src={capsule.media_url}
+                                    alt="Capsule media"
                                     className="object-cover w-full h-full"
                                 />
                             ) : (

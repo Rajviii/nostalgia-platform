@@ -16,7 +16,7 @@ const postSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100, "Title is too long"),
   content: z.string().min(10, "Share a bit more about this memory..."),
   image_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  is_public: z.boolean().default(true),
+  is_public: z.boolean(),
   tags: z.string().optional(),
 });
 
@@ -86,7 +86,7 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
       const isEditing = !!initialData;
       const url = "/api/posts";
       const method = isEditing ? "PUT" : "POST";
-      
+
       const payload = {
         title: data.title,
         content: data.content,
@@ -148,52 +148,56 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
             </div>
 
             <div className="flex items-center gap-2 border border-border/40 rounded-full px-4 py-2 mt-4 max-w-sm">
-                <Hash className="w-4 h-4 text-muted-foreground" />
-                <input 
-                    placeholder="Add tags..." 
-                    className="bg-transparent border-none outline-none text-sm w-full focus:ring-0 placeholder:text-muted-foreground/60"
-                    {...register("tags")}
-                />
+              <Hash className="w-4 h-4 text-muted-foreground" />
+              <input
+                placeholder="Add tags..."
+                className="bg-transparent border-none outline-none text-sm w-full focus:ring-0 placeholder:text-muted-foreground/60"
+                {...register("tags")}
+              />
             </div>
           </form>
         </div>
 
         <div className="bg-[#efede6]/30 px-8 py-5 flex items-center justify-between border-t border-border/40 mt-6">
-            <div className="flex items-center gap-4 text-muted-foreground">
-                <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
-                    <ImageIcon className="w-5 h-5" />
-                </button>
-                <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
-                    <Smile className="w-5 h-5" />
-                </button>
-                <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
-                    <MapPin className="w-5 h-5" />
-                </button>
-                <div className="h-6 w-px bg-border/60 mx-1" />
-                <button 
-                    type="button" 
-                    onClick={() => setIsPublic(!isPublic)}
-                    className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors px-3 py-1.5 rounded-full ${isPublic ? 'text-primary bg-primary/10' : 'text-muted-foreground bg-muted/50'}`}
-                >
-                    {isPublic ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
-                    {isPublic ? 'Public' : 'Private'}
-                </button>
-            </div>
-            
-            <div className="flex items-center gap-3">
-                <Button type="button" variant="ghost" onClick={onClose} disabled={isLoading} className="font-medium hover:bg-transparent hover:underline text-muted-foreground">
-                    Cancel
-                </Button>
-                <Button 
-                    type="submit" 
-                    form="post-form"
-                    className="rounded-full px-6 bg-[#222] hover:bg-black text-white font-medium shadow-xl" 
-                    disabled={isLoading}
-                >
-                    {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {initialData ? "Save Changes" : "Share Memory"}
-                </Button>
-            </div>
+          <div className="flex items-center gap-4 text-muted-foreground">
+            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
+              <ImageIcon className="w-5 h-5" />
+            </button>
+            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
+              <Smile className="w-5 h-5" />
+            </button>
+            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
+              <MapPin className="w-5 h-5" />
+            </button>
+            <div className="h-6 w-px bg-border/60 mx-1" />
+            <button
+              type="button"
+              onClick={() => {
+                const newValue = !isPublic;
+                setIsPublic(newValue);
+                setValue("is_public", newValue);
+              }}
+              className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors px-3 py-1.5 rounded-full ${isPublic ? 'text-primary bg-primary/10' : 'text-muted-foreground bg-muted/50'}`}
+            >
+              {isPublic ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
+              {isPublic ? 'Public' : 'Private'}
+            </button>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Button type="button" variant="ghost" onClick={onClose} disabled={isLoading} className="font-medium hover:bg-transparent hover:underline text-muted-foreground">
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              form="post-form"
+              className="rounded-full px-6 bg-[#222] hover:bg-black text-white font-medium shadow-xl"
+              disabled={isLoading}
+            >
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {initialData ? "Save Changes" : "Share Memory"}
+            </Button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
