@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/lib/auth-context";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,14 +37,21 @@ export default function RootLayout({
         >
           <AuthProvider>
             <div className="noise-overlay" />
-            <Toaster position="bottom-right" toastOptions={{
-              style: {
-                background: "hsl(var(--card))",
-                color: "hsl(var(--foreground))",
-                border: "1px border hsl(var(--border))",
-              }
-            }} />
+
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                style: {
+                  background: "hsl(var(--card))",
+                  color: "hsl(var(--foreground))",
+                  border: "1px solid hsl(var(--border))",
+                },
+              }}
+            />
+
             {children}
+
+            <Analytics />
           </AuthProvider>
         </ThemeProvider>
       </body>
