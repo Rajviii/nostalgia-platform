@@ -126,7 +126,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 </div>
 
                 {/* Your Contribution */}
-                <div className="bg-card rounded-[2rem] p-6 shadow-sm border border-border/30">
+                <div className="bg-card rounded-[2rem] p-6 shadow-sm border border-border/30 hidden">
                   <h3 className="font-bold text-[15px] mb-4">Your Contribution</h3>
                   <div className="mb-4">
                     <span className="text-3xl font-bold font-serif">23</span>
