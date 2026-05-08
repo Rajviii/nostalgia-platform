@@ -24,6 +24,7 @@ interface PostCardProps {
     commentsCount: number;
     likesCount: number;
     isLiked?: boolean;
+    categories?: string[];
   };
   onLike?: (postId: number) => void;
   onCommentClick?: (postId: number) => void;
@@ -110,8 +111,8 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
                   disabled={isFollowLoading}
                   className={cn(
                     "text-[11px] font-bold px-2.5 py-0.5 rounded-full transition-all border",
-                    isFollowing 
-                      ? "bg-secondary text-muted-foreground border-border/50" 
+                    isFollowing
+                      ? "bg-secondary text-muted-foreground border-border/50"
                       : "bg-primary/10 text-primary border-primary/20 hover:bg-primary hover:text-primary-foreground"
                   )}
                 >
@@ -138,8 +139,18 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
         </Typography>
 
         <div className="flex flex-wrap gap-2 pt-2">
-          <span className="px-3 py-1.5 bg-secondary/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Nostalgia</span>
-          <span className="px-3 py-1.5 bg-secondary/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Memories</span>
+          {post.categories && post.categories.length > 0 ? (
+            post.categories.map((category, index) => (
+              <span key={index} className="px-3 py-1.5 bg-secondary/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">
+                {category}
+              </span>
+            ))
+          ) : (
+            <>
+              <span className="px-3 py-1.5 bg-secondary/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Nostalgia</span>
+              <span className="px-3 py-1.5 bg-secondary/50 rounded-full text-xs font-medium text-muted-foreground border border-border/30">Memories</span>
+            </>
+          )}
         </div>
 
         {post.image_url && (

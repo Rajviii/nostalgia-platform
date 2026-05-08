@@ -12,8 +12,7 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-
-        const { title, content, user_id, image_url } = body;
+        const { title, content, user_id, image_url, tags, categoryIds } = body;
 
         if (!title || !content || !user_id) {
             return Response.json(
@@ -22,31 +21,57 @@ export async function POST(request: Request) {
             );
         }
 
+        // Process Tags and Category IDs
+        let allCategoryIds: number[] = categoryIds || [];
+
+        if (tags && typeof tags === "string") {
+            const tagNames = tags.split(",").map(t => t.trim().toLowerCase()).filter(t => t.length > 0);
+            
+            for (const name of tagNames) {
+                const slug = name.replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                const category = await prisma.categories.upsert({
+                    where: { slug },
+                    update: {},
+                    create: { name, slug }
+                });
+                if (!allCategoryIds.includes(category.id)) {
+                    allCategoryIds.push(category.id);
+                }
+            }
+        }
+
         const newPost = await prisma.posts.create({
             data: {
                 title,
                 content,
                 user_id,
                 image_url,
+                post_categories: {
+                    create: allCategoryIds.map(id => ({
+                        category_id: id
+                    }))
+                }
             },
+            include: {
+                post_categories: {
+                    include: {
+                        categories: true
+                    }
+                }
+            }
         });
 
         return Response.json(newPost, { status: 201, });
     } catch (error) {
         console.error(error);
-
-        return Response.json(
-            { error: "Something went wrong", },
-            { status: 500, }
-        );
+        return Response.json({ error: "Something went wrong" }, { status: 500 });
     }
 }
 
 export async function PUT(request: Request) {
     try {
         const body = await request.json();
-
-        const { id, title, content, user_id, image_url } = body;
+        const { id, title, content, user_id, image_url, tags, categoryIds } = body;
 
         if (!id || !title || !content || !user_id) {
             return Response.json(
@@ -55,7 +80,6 @@ export async function PUT(request: Request) {
             );
         }
 
-        // Optional: verify the user owns the post
         const existingPost = await prisma.posts.findUnique({
             where: { id: Number(id) }
         });
@@ -68,22 +92,49 @@ export async function PUT(request: Request) {
             return Response.json({ error: "Unauthorized" }, { status: 401 });
         }
 
+        // Process Tags and Category IDs
+        let allCategoryIds: number[] = categoryIds || [];
+
+        if (tags && typeof tags === "string") {
+            const tagNames = tags.split(",").map(t => t.trim().toLowerCase()).filter(t => t.length > 0);
+            for (const name of tagNames) {
+                const slug = name.replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                const category = await prisma.categories.upsert({
+                    where: { slug },
+                    update: {},
+                    create: { name, slug }
+                });
+                if (!allCategoryIds.includes(category.id)) {
+                    allCategoryIds.push(category.id);
+                }
+            }
+        }
+
         const updatedPost = await prisma.posts.update({
             where: { id: Number(id) },
             data: {
                 title,
                 content,
                 image_url,
+                post_categories: {
+                    deleteMany: {}, // Clear existing relations
+                    create: allCategoryIds.map(id => ({
+                        category_id: id
+                    }))
+                }
             },
+            include: {
+                post_categories: {
+                    include: {
+                        categories: true
+                    }
+                }
+            }
         });
 
         return Response.json(updatedPost, { status: 200, });
     } catch (error) {
         console.error(error);
-
-        return Response.json(
-            { error: "Something went wrong", },
-            { status: 500, }
-        );
+        return Response.json({ error: "Something went wrong" }, { status: 500 });
     }
 }

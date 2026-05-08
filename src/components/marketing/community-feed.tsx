@@ -89,7 +89,7 @@ export function CommunityFeed() {
                       </div>
                       <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <Typography className="mb-4 text-sm leading-relaxed">
+                    <Typography className="mb-4 text-sm leading-relaxed whitespace-pre-wrap">
                       {post.content}
                     </Typography>
                     <div className="flex items-center justify-between pt-4 border-t border-border/50">

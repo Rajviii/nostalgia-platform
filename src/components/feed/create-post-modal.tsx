@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Loader2, Image as ImageIcon, Smile, MapPin, Hash, Globe, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import TextareaAutosize from "react-textarea-autosize";
+import { cn } from "@/lib/utils";
 
 const postSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100, "Title is too long"),
@@ -39,6 +40,8 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const [isPublic, setIsPublic] = useState(true);
+  const [categories, setCategories] = useState<{ id: number, name: string }[]>([]);
+  const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
 
   const {
     register,
@@ -65,15 +68,52 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
   });
 
   useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/categories");
+        if (res.ok) {
+          const data = await res.json();
+          setCategories(data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch categories", err);
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  useEffect(() => {
     if (initialData && isOpen) {
       setValue("title", initialData.title);
       setValue("content", initialData.content);
       setValue("image_url", initialData.image_url || "");
+      // Fetch post categories if editing
+      const fetchPostCategories = async () => {
+        try {
+          const res = await fetch(`/api/posts/${initialData.id}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.post_categories) {
+              setSelectedCategoryIds(data.post_categories.map((pc: any) => pc.category_id));
+            }
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      fetchPostCategories();
     } else if (!initialData && isOpen) {
       reset();
       setIsPublic(true);
+      setSelectedCategoryIds([]);
     }
   }, [initialData, isOpen, setValue, reset]);
+
+  const toggleCategory = (id: number) => {
+    setSelectedCategoryIds(prev =>
+      prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
+    );
+  };
 
   const onSubmit = async (data: PostValues) => {
     if (!user) {
@@ -92,6 +132,8 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
         content: data.content,
         image_url: data.image_url,
         user_id: user.id,
+        tags: data.tags,
+        categoryIds: selectedCategoryIds,
         ...(isEditing && { id: initialData.id })
       };
 
@@ -147,13 +189,35 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
               {errors.content && <p className="text-xs text-destructive mt-1">{errors.content.message}</p>}
             </div>
 
-            <div className="flex items-center gap-2 border border-border/40 rounded-full px-4 py-2 mt-4 max-w-sm">
-              <Hash className="w-4 h-4 text-muted-foreground" />
-              <input
-                placeholder="Add tags..."
-                className="bg-transparent border-none outline-none text-sm w-full focus:ring-0 placeholder:text-muted-foreground/60"
-                {...register("tags")}
-              />
+            <div className="space-y-3">
+              <div className="flex items-center gap-2 border border-border/40 rounded-full px-4 py-2 max-w-sm">
+                <Hash className="w-4 h-4 text-muted-foreground" />
+                <input
+                  placeholder="Add tags (comma separated)..."
+                  className="bg-transparent border-none outline-none text-sm w-full focus:ring-0 placeholder:text-muted-foreground/60"
+                  {...register("tags")}
+                />
+              </div>
+
+              {categories.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {categories.map(cat => (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => toggleCategory(cat.id)}
+                      className={cn(
+                        "px-3 py-1 rounded-full text-xs font-medium border transition-all",
+                        selectedCategoryIds.includes(cat.id)
+                          ? "bg-primary text-primary-foreground border-primary"
+                          : "bg-secondary text-muted-foreground border-border/40 hover:border-border"
+                      )}
+                    >
+                      {cat.name}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </form>
         </div>

@@ -18,6 +18,7 @@ interface Post {
   user: { id: number; username: string; isFollowing?: boolean } | null;
   commentsCount: number;
   likesCount: number;
+  categories?: string[];
 }
 
 export default function FeedPage() {

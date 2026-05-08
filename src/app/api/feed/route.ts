@@ -28,6 +28,11 @@ export async function GET(request: Request) {
                 },
                 comments: true,
                 likes: true,
+                post_categories: {
+                    include: {
+                        categories: true
+                    }
+                }
             },
             orderBy: { created_at: "desc" },
         });
@@ -51,6 +56,7 @@ export async function GET(request: Request) {
             commentsCount: post.comments.length,
             likesCount: post.likes.length,
             isLiked: userId ? post.likes.some(like => like.user_id === Number(userId)) : false,
+            categories: post.post_categories.map(pc => pc.categories.name),
         }));
 
         return Response.json(formattedFeed);
