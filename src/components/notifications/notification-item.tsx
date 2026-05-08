@@ -29,15 +29,15 @@ export function NotificationItem({ notification, onMarkAsRead, onDelete }: Notif
     return (
         <div
             className={cn(
-                "group relative flex gap-4 p-5 transition-all hover:bg-muted/30 rounded-[1.5rem] border border-border/40",
-                !notification.is_read ? "bg-[#efede6]/50" : "bg-card"
+                "group relative flex gap-4 p-5 transition-all hover:bg-muted rounded-[1.5rem] border border-border/40",
+                !notification.is_read ? "bg-muted" : "bg-card"
             )}
             onClick={() => !notification.is_read && onMarkAsRead(notification.id)}
         >
             <div className="flex-shrink-0 mt-1">
                 <div className={cn(
                     "w-12 h-12 rounded-full flex items-center justify-center border shadow-sm",
-                    !notification.is_read ? "bg-background border-primary/20" : "bg-[#efede6]/50 border-transparent"
+                    !notification.is_read ? "bg-background border-primary/20" : "bg-muted border-transparent"
                 )}>
                     {getIcon()}
                 </div>

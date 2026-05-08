@@ -44,7 +44,7 @@ export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () 
                 "flex items-center gap-4 px-4 py-3 rounded-full transition-all duration-200 group font-medium",
                 isActive
                   ? "bg-secondary text-foreground shadow-sm"
-                  : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-secondary hover:text-foreground"
               )}
             >
               <link.icon className={cn("w-5 h-5 transition-transform group-hover:scale-110", isActive ? "stroke-[2.5px]" : "stroke-2")} />
@@ -78,7 +78,7 @@ export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () 
       </div>
 
       <div className="p-4 mt-auto space-y-2">
-        <div className="flex items-center gap-4 px-4 py-3 text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-full hover:bg-secondary/50">
+        <div className="flex items-center gap-4 px-4 py-3 text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-full hover:bg-secondary">
           <SunMoon className="w-5 h-5" />
           <div className="flex-1 flex justify-between items-center">
             <span className="text-[15px] font-medium">Theme</span>

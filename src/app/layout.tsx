@@ -36,8 +36,6 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <AuthProvider>
-            <div className="noise-overlay" />
-
             <Toaster
               position="bottom-right"
               toastOptions={{

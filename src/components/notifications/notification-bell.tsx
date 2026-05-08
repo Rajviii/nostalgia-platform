@@ -109,7 +109,7 @@ export function NotificationBell() {
                 align="end"
                 className="w-[380px] p-0 overflow-hidden bg-background border border-border shadow-2xl animate-in slide-in-from-top-2 duration-300 z-50"
             >
-                <div className="flex items-center justify-between p-4 bg-muted/30 border-b">
+                <div className="flex items-center justify-between p-4 bg-muted border-b">
                     <h2 className="font-bold text-lg">Notifications</h2>
                     {unreadCount > 0 && (
                         <Button
@@ -157,7 +157,7 @@ export function NotificationBell() {
                 </div>
 
                 {notifications.length > 0 && (
-                    <div className="p-2 border-t bg-muted/10 text-center">
+                    <div className="p-2 border-t bg-muted text-center">
                         <Link href="/notifications" onClick={() => setIsOpen(false)}>
                             <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground hover:text-foreground">
                                 View all notifications

@@ -158,15 +158,15 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
           </form>
         </div>
 
-        <div className="bg-[#efede6]/30 px-8 py-5 flex items-center justify-between border-t border-border/40 mt-6">
+        <div className="bg-secondary px-8 py-5 flex items-center justify-between border-t border-border/40 mt-6">
           <div className="flex items-center gap-4 text-muted-foreground">
-            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
+            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
               <ImageIcon className="w-5 h-5" />
             </button>
-            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
+            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
               <Smile className="w-5 h-5" />
             </button>
-            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-[#efede6]/50">
+            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
               <MapPin className="w-5 h-5" />
             </button>
             <div className="h-6 w-px bg-border/60 mx-1" />
@@ -177,7 +177,7 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
                 setIsPublic(newValue);
                 setValue("is_public", newValue);
               }}
-              className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors px-3 py-1.5 rounded-full ${isPublic ? 'text-primary bg-primary/10' : 'text-muted-foreground bg-muted/50'}`}
+              className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors px-3 py-1.5 rounded-full ${isPublic ? 'text-primary bg-primary/20' : 'text-muted-foreground bg-muted'}`}
             >
               {isPublic ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
               {isPublic ? 'Public' : 'Private'}
