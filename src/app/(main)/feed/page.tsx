@@ -15,7 +15,7 @@ interface Post {
   content: string;
   image_url: string | null;
   created_at: string;
-  user: { id: number; username: string } | null;
+  user: { id: number; username: string; isFollowing?: boolean } | null;
   commentsCount: number;
   likesCount: number;
 }
