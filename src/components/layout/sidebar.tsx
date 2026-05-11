@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, User, Bell, LogOut, Compass, Plus, Timer, Flame, SunMoon } from "lucide-react";
+import { Home, User, Bell, LogOut, Plus, Timer, Flame, SunMoon, } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Typography } from "@/components/ui/typography";
 import { useAuth } from "@/lib/auth-context";
@@ -15,7 +15,6 @@ export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () 
 
   const links = [
     { name: "Home", href: "/feed", icon: Home },
-    // { name: "Explore", href: "/explore", icon: Compass },
     { name: "Nextalgia", href: "/nextalgia", icon: Timer },
     { name: "Notifications", href: "/notifications", icon: Bell },
     { name: "Profile", href: `/profile/${user?.id || ''}`, icon: User },
@@ -25,7 +24,10 @@ export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () 
     <aside className="h-full w-full bg-background flex flex-col py-4">
       {!hideLogo && (
         <div className="p-8 pb-4">
-          <Link href="/feed" className="flex items-center gap-1 group">
+          <Link href="/feed" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center overflow-hidden border border-border/40 shadow-sm group-hover:scale-110 transition-transform duration-300">
+              <img src="/logo.png" alt="Aiglatson Logo" className="w-full h-full object-cover" />
+            </div>
             <Typography as="span" variant="h3" serif className="text-3xl font-bold tracking-tight">
               Aiglatson<sup className="text-xl relative top-[-0.3em] font-sans">+</sup>
             </Typography>

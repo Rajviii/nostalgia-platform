@@ -19,6 +19,10 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "Aiglatson | Relive the moments that never truly left you",
   description: "A nostalgic social platform where people share emotional memories, moments, and forgotten eras.",
+  icons: {
+    icon: "/icon.png",
+    apple: "/icon.png",
+  },
 };
 
 export default function RootLayout({
