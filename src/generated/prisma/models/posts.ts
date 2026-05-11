@@ -230,8 +230,8 @@ export type postsWhereInput = {
   created_at?: Prisma.DateTimeNullableFilter<"posts"> | Date | string | null
   comments?: Prisma.CommentsListRelationFilter
   likes?: Prisma.LikesListRelationFilter
-  users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
   post_categories?: Prisma.Post_categoriesListRelationFilter
+  users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
 }
 
 export type postsOrderByWithRelationInput = {
@@ -243,8 +243,8 @@ export type postsOrderByWithRelationInput = {
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
   comments?: Prisma.commentsOrderByRelationAggregateInput
   likes?: Prisma.likesOrderByRelationAggregateInput
-  users?: Prisma.usersOrderByWithRelationInput
   post_categories?: Prisma.post_categoriesOrderByRelationAggregateInput
+  users?: Prisma.usersOrderByWithRelationInput
 }
 
 export type postsWhereUniqueInput = Prisma.AtLeast<{
@@ -259,8 +259,8 @@ export type postsWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeNullableFilter<"posts"> | Date | string | null
   comments?: Prisma.CommentsListRelationFilter
   likes?: Prisma.LikesListRelationFilter
-  users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
   post_categories?: Prisma.Post_categoriesListRelationFilter
+  users?: Prisma.XOR<Prisma.UsersNullableScalarRelationFilter, Prisma.usersWhereInput> | null
 }, "id">
 
 export type postsOrderByWithAggregationInput = {
@@ -296,8 +296,8 @@ export type postsCreateInput = {
   created_at?: Date | string | null
   comments?: Prisma.commentsCreateNestedManyWithoutPostsInput
   likes?: Prisma.likesCreateNestedManyWithoutPostsInput
-  users?: Prisma.usersCreateNestedOneWithoutPostsInput
   post_categories?: Prisma.post_categoriesCreateNestedManyWithoutPostsInput
+  users?: Prisma.usersCreateNestedOneWithoutPostsInput
 }
 
 export type postsUncheckedCreateInput = {
@@ -319,8 +319,8 @@ export type postsUpdateInput = {
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUpdateManyWithoutPostsNestedInput
   likes?: Prisma.likesUpdateManyWithoutPostsNestedInput
-  users?: Prisma.usersUpdateOneWithoutPostsNestedInput
   post_categories?: Prisma.post_categoriesUpdateManyWithoutPostsNestedInput
+  users?: Prisma.usersUpdateOneWithoutPostsNestedInput
 }
 
 export type postsUncheckedUpdateInput = {
@@ -515,8 +515,8 @@ export type postsCreateWithoutCommentsInput = {
   image_url?: string | null
   created_at?: Date | string | null
   likes?: Prisma.likesCreateNestedManyWithoutPostsInput
-  users?: Prisma.usersCreateNestedOneWithoutPostsInput
   post_categories?: Prisma.post_categoriesCreateNestedManyWithoutPostsInput
+  users?: Prisma.usersCreateNestedOneWithoutPostsInput
 }
 
 export type postsUncheckedCreateWithoutCommentsInput = {
@@ -552,8 +552,8 @@ export type postsUpdateWithoutCommentsInput = {
   image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   likes?: Prisma.likesUpdateManyWithoutPostsNestedInput
-  users?: Prisma.usersUpdateOneWithoutPostsNestedInput
   post_categories?: Prisma.post_categoriesUpdateManyWithoutPostsNestedInput
+  users?: Prisma.usersUpdateOneWithoutPostsNestedInput
 }
 
 export type postsUncheckedUpdateWithoutCommentsInput = {
@@ -573,8 +573,8 @@ export type postsCreateWithoutLikesInput = {
   image_url?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsCreateNestedManyWithoutPostsInput
-  users?: Prisma.usersCreateNestedOneWithoutPostsInput
   post_categories?: Prisma.post_categoriesCreateNestedManyWithoutPostsInput
+  users?: Prisma.usersCreateNestedOneWithoutPostsInput
 }
 
 export type postsUncheckedCreateWithoutLikesInput = {
@@ -610,8 +610,8 @@ export type postsUpdateWithoutLikesInput = {
   image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUpdateManyWithoutPostsNestedInput
-  users?: Prisma.usersUpdateOneWithoutPostsNestedInput
   post_categories?: Prisma.post_categoriesUpdateManyWithoutPostsNestedInput
+  users?: Prisma.usersUpdateOneWithoutPostsNestedInput
 }
 
 export type postsUncheckedUpdateWithoutLikesInput = {
@@ -837,8 +837,8 @@ export type postsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   created_at?: boolean
   comments?: boolean | Prisma.posts$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.posts$likesArgs<ExtArgs>
-  users?: boolean | Prisma.posts$usersArgs<ExtArgs>
   post_categories?: boolean | Prisma.posts$post_categoriesArgs<ExtArgs>
+  users?: boolean | Prisma.posts$usersArgs<ExtArgs>
   _count?: boolean | Prisma.PostsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["posts"]>
 
@@ -875,8 +875,8 @@ export type postsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
 export type postsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comments?: boolean | Prisma.posts$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.posts$likesArgs<ExtArgs>
-  users?: boolean | Prisma.posts$usersArgs<ExtArgs>
   post_categories?: boolean | Prisma.posts$post_categoriesArgs<ExtArgs>
+  users?: boolean | Prisma.posts$usersArgs<ExtArgs>
   _count?: boolean | Prisma.PostsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type postsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -891,8 +891,8 @@ export type $postsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   objects: {
     comments: Prisma.$commentsPayload<ExtArgs>[]
     likes: Prisma.$likesPayload<ExtArgs>[]
-    users: Prisma.$usersPayload<ExtArgs> | null
     post_categories: Prisma.$post_categoriesPayload<ExtArgs>[]
+    users: Prisma.$usersPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1297,8 +1297,8 @@ export interface Prisma__postsClient<T, Null = never, ExtArgs extends runtime.Ty
   readonly [Symbol.toStringTag]: "PrismaPromise"
   comments<T extends Prisma.posts$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.posts$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$commentsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   likes<T extends Prisma.posts$likesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.posts$likesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$likesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  users<T extends Prisma.posts$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.posts$usersArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   post_categories<T extends Prisma.posts$post_categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.posts$post_categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$post_categoriesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  users<T extends Prisma.posts$usersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.posts$usersArgs<ExtArgs>>): Prisma.Prisma__usersClient<runtime.Types.Result.GetResult<Prisma.$usersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1783,25 +1783,6 @@ export type posts$likesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 }
 
 /**
- * posts.users
- */
-export type posts$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the users
-   */
-  select?: Prisma.usersSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the users
-   */
-  omit?: Prisma.usersOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.usersInclude<ExtArgs> | null
-  where?: Prisma.usersWhereInput
-}
-
-/**
  * posts.post_categories
  */
 export type posts$post_categoriesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1823,6 +1804,25 @@ export type posts$post_categoriesArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.Post_categoriesScalarFieldEnum | Prisma.Post_categoriesScalarFieldEnum[]
+}
+
+/**
+ * posts.users
+ */
+export type posts$usersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the users
+   */
+  select?: Prisma.usersSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the users
+   */
+  omit?: Prisma.usersOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.usersInclude<ExtArgs> | null
+  where?: Prisma.usersWhereInput
 }
 
 /**

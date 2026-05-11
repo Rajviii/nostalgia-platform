@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcrypt";
+import { signToken, COOKIE_NAME } from "@/lib/jwt";
 
 export async function POST(request: Request) {
     try {
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
         }
 
         const user = await prisma.users.findUnique({
-            where: { email, },
+            where: { email },
         });
 
         if (!user) {
@@ -36,10 +37,34 @@ export async function POST(request: Request) {
 
         const { password: _password, ...safeUser } = user;
 
-        return Response.json({
-            message: "Login successful",
-            user: safeUser,
+        // Sign a JWT and attach as an HTTP-only cookie
+        const token = await signToken({
+            userId: user.id,
+            email: user.email,
+            username: user.username,
         });
+
+        const cookieOptions = [
+            `${COOKIE_NAME}=${token}`,
+            "HttpOnly",
+            "Path=/",
+            "SameSite=Lax",
+            "Max-Age=604800", // 7 days in seconds
+            process.env.NODE_ENV === "production" ? "Secure" : "",
+        ]
+            .filter(Boolean)
+            .join("; ");
+
+        return new Response(
+            JSON.stringify({ message: "Login successful", user: safeUser }),
+            {
+                status: 200,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Set-Cookie": cookieOptions,
+                },
+            }
+        );
 
     } catch (error) {
         console.error(error);
