@@ -63,8 +63,8 @@ export async function POST(request: Request) {
         }
 
         return Response.json(newComment, { status: 201 });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Comment error:", error);
-        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        return Response.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }

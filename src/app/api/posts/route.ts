@@ -12,13 +12,28 @@ export async function GET() {
 export async function POST(request: Request) {
     try {
         const body = await request.json();
-        const { title, content, user_id, image_url, tags, categoryIds } = body;
+        const { title, content, user_id, image, tags, categoryIds } = body;
 
         if (!title || !content || !user_id) {
             return Response.json(
                 { error: "Title, content and user_id are required", },
                 { status: 400, }
             );
+        }
+
+        // Image Validation
+        if (image) {
+            // Check if it's a data URL
+            if (!image.startsWith('data:image/')) {
+                return Response.json({ error: "Invalid image format. Must be a data URL." }, { status: 400 });
+            }
+
+            // Check size (approximate for Base64)
+            const sizeInBytes = (image.length * 3) / 4;
+            const sizeInMB = sizeInBytes / (1024 * 1024);
+            if (sizeInMB > 5) {
+                return Response.json({ error: "Image too large. Maximum size is 5MB." }, { status: 400 });
+            }
         }
 
         // Process Tags and Category IDs
@@ -45,7 +60,7 @@ export async function POST(request: Request) {
                 title,
                 content,
                 user_id,
-                image_url,
+                image,
                 post_categories: {
                     create: allCategoryIds.map(id => ({
                         category_id: id
@@ -62,22 +77,31 @@ export async function POST(request: Request) {
         });
 
         return Response.json(newPost, { status: 201, });
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
-        return Response.json({ error: "Something went wrong" }, { status: 500 });
+        return Response.json({ error: error.message || "Something went wrong" }, { status: 500 });
     }
 }
 
 export async function PUT(request: Request) {
     try {
         const body = await request.json();
-        const { id, title, content, user_id, image_url, tags, categoryIds } = body;
+        const { id, title, content, user_id, image, tags, categoryIds } = body;
 
         if (!id || !title || !content || !user_id) {
             return Response.json(
                 { error: "Post ID, title, content, and user_id are required", },
                 { status: 400, }
             );
+        }
+
+        // Image Validation
+        if (image && image.startsWith('data:image/')) {
+            const sizeInBytes = (image.length * 3) / 4;
+            const sizeInMB = sizeInBytes / (1024 * 1024);
+            if (sizeInMB > 5) {
+                return Response.json({ error: "Image too large. Maximum size is 5MB." }, { status: 400 });
+            }
         }
 
         const existingPost = await prisma.posts.findUnique({
@@ -115,7 +139,7 @@ export async function PUT(request: Request) {
             data: {
                 title,
                 content,
-                image_url,
+                image,
                 post_categories: {
                     deleteMany: {}, // Clear existing relations
                     create: allCategoryIds.map(id => ({
@@ -133,8 +157,8 @@ export async function PUT(request: Request) {
         });
 
         return Response.json(updatedPost, { status: 200, });
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
-        return Response.json({ error: "Something went wrong" }, { status: 500 });
+        return Response.json({ error: error.message || "Something went wrong" }, { status: 500 });
     }
 }

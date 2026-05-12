@@ -63,8 +63,8 @@ export async function POST(request: Request) {
         });
 
         return Response.json({ message: "Followed", followed: true, follow: newFollow }, { status: 201 });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Follow error:", error);
-        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        return Response.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }

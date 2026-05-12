@@ -29,8 +29,8 @@ export async function GET() {
 
         return Response.json({ user });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
-        return Response.json({ error: "Something went wrong" }, { status: 500 });
+        return Response.json({ error: error.message || "Something went wrong" }, { status: 500 });
     }
 }

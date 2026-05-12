@@ -6,8 +6,8 @@ export async function GET() {
             orderBy: { name: "asc" }
         });
         return Response.json(categories);
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
-        return Response.json({ error: "Failed to fetch categories" }, { status: 500 });
+        return Response.json({ error: error.message || "Failed to fetch categories" }, { status: 500 });
     }
 }

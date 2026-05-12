@@ -59,7 +59,7 @@ export async function GET(
             id: post.id,
             title: post.title,
             content: post.content,
-            image_url: post.image_url,
+            image: post.image,
             created_at: post.created_at,
             user: post.users,
             commentsCount: post.comments.length,
@@ -77,8 +77,8 @@ export async function GET(
             posts: formattedPosts,
             isFollowing
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Profile error:", error);
-        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        return Response.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }

@@ -47,9 +47,9 @@ export async function PATCH(request: Request) {
         }
 
         return Response.json({ error: "Missing required fields" }, { status: 400 });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Update notification error:", error);
-        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        return Response.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }
 
@@ -67,8 +67,8 @@ export async function DELETE(request: Request) {
         });
 
         return Response.json({ message: "Deleted" });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Delete notification error:", error);
-        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        return Response.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }

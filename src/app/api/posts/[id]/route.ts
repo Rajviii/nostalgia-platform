@@ -27,11 +27,11 @@ export async function GET(
 
         return Response.json(post);
 
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
 
         return Response.json(
-            { error: "Failed to fetch post" },
+            { error: error.message || "Failed to fetch post" },
             { status: 500 }
         );
     }

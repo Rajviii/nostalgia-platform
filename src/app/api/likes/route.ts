@@ -67,8 +67,8 @@ export async function POST(request: Request) {
         }
 
         return Response.json({ message: "Liked", liked: true, like: newLike }, { status: 201 });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Like error:", error);
-        return Response.json({ error: "Internal Server Error" }, { status: 500 });
+        return Response.json({ error: error.message || "Internal Server Error" }, { status: 500 });
     }
 }

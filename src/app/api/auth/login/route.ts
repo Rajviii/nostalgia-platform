@@ -66,11 +66,11 @@ export async function POST(request: Request) {
             }
         );
 
-    } catch (error) {
+    } catch (error: any) {
         console.error(error);
 
         return Response.json(
-            { error: "Something went wrong" },
+            { error: error.message || "Something went wrong" },
             { status: 500 }
         );
     }
