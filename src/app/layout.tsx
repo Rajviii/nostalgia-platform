@@ -23,6 +23,10 @@ export const metadata: Metadata = {
     icon: "/icon.png",
     apple: "/icon.png",
   },
+  keywords: ["nostalgia", "memories", "moments", "eras", "Aiglatson", "nostalgia platform", "childhood memories",
+    "old memories", "old moments", "old eras", "retro memories", "nostalgic stories"
+  ],
+  metadataBase: new URL("https://nostalgia-platform.vercel.app"),
 };
 
 export default function RootLayout({

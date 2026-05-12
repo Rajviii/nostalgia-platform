@@ -117,6 +117,11 @@ export function Footer() {
                   Contact Us
                 </Link>
               </li>
+              <li>
+                <Link href="/privacy-policy">
+                  Privacy Policy
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
