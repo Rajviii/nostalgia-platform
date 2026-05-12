@@ -41,7 +41,7 @@ export type PostsMinAggregateOutputType = {
   user_id: number | null
   title: string | null
   content: string | null
-  image_url: string | null
+  image: string | null
   created_at: Date | null
 }
 
@@ -50,7 +50,7 @@ export type PostsMaxAggregateOutputType = {
   user_id: number | null
   title: string | null
   content: string | null
-  image_url: string | null
+  image: string | null
   created_at: Date | null
 }
 
@@ -59,7 +59,7 @@ export type PostsCountAggregateOutputType = {
   user_id: number
   title: number
   content: number
-  image_url: number
+  image: number
   created_at: number
   _all: number
 }
@@ -80,7 +80,7 @@ export type PostsMinAggregateInputType = {
   user_id?: true
   title?: true
   content?: true
-  image_url?: true
+  image?: true
   created_at?: true
 }
 
@@ -89,7 +89,7 @@ export type PostsMaxAggregateInputType = {
   user_id?: true
   title?: true
   content?: true
-  image_url?: true
+  image?: true
   created_at?: true
 }
 
@@ -98,7 +98,7 @@ export type PostsCountAggregateInputType = {
   user_id?: true
   title?: true
   content?: true
-  image_url?: true
+  image?: true
   created_at?: true
   _all?: true
 }
@@ -194,7 +194,7 @@ export type PostsGroupByOutputType = {
   user_id: number | null
   title: string
   content: string
-  image_url: string | null
+  image: string | null
   created_at: Date | null
   _count: PostsCountAggregateOutputType | null
   _avg: PostsAvgAggregateOutputType | null
@@ -226,7 +226,7 @@ export type postsWhereInput = {
   user_id?: Prisma.IntNullableFilter<"posts"> | number | null
   title?: Prisma.StringFilter<"posts"> | string
   content?: Prisma.StringFilter<"posts"> | string
-  image_url?: Prisma.StringNullableFilter<"posts"> | string | null
+  image?: Prisma.StringNullableFilter<"posts"> | string | null
   created_at?: Prisma.DateTimeNullableFilter<"posts"> | Date | string | null
   comments?: Prisma.CommentsListRelationFilter
   likes?: Prisma.LikesListRelationFilter
@@ -239,7 +239,7 @@ export type postsOrderByWithRelationInput = {
   user_id?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  image_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
   comments?: Prisma.commentsOrderByRelationAggregateInput
   likes?: Prisma.likesOrderByRelationAggregateInput
@@ -255,7 +255,7 @@ export type postsWhereUniqueInput = Prisma.AtLeast<{
   user_id?: Prisma.IntNullableFilter<"posts"> | number | null
   title?: Prisma.StringFilter<"posts"> | string
   content?: Prisma.StringFilter<"posts"> | string
-  image_url?: Prisma.StringNullableFilter<"posts"> | string | null
+  image?: Prisma.StringNullableFilter<"posts"> | string | null
   created_at?: Prisma.DateTimeNullableFilter<"posts"> | Date | string | null
   comments?: Prisma.CommentsListRelationFilter
   likes?: Prisma.LikesListRelationFilter
@@ -268,7 +268,7 @@ export type postsOrderByWithAggregationInput = {
   user_id?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  image_url?: Prisma.SortOrderInput | Prisma.SortOrder
+  image?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.postsCountOrderByAggregateInput
   _avg?: Prisma.postsAvgOrderByAggregateInput
@@ -285,14 +285,14 @@ export type postsScalarWhereWithAggregatesInput = {
   user_id?: Prisma.IntNullableWithAggregatesFilter<"posts"> | number | null
   title?: Prisma.StringWithAggregatesFilter<"posts"> | string
   content?: Prisma.StringWithAggregatesFilter<"posts"> | string
-  image_url?: Prisma.StringNullableWithAggregatesFilter<"posts"> | string | null
+  image?: Prisma.StringNullableWithAggregatesFilter<"posts"> | string | null
   created_at?: Prisma.DateTimeNullableWithAggregatesFilter<"posts"> | Date | string | null
 }
 
 export type postsCreateInput = {
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsCreateNestedManyWithoutPostsInput
   likes?: Prisma.likesCreateNestedManyWithoutPostsInput
@@ -305,7 +305,7 @@ export type postsUncheckedCreateInput = {
   user_id?: number | null
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutPostsInput
   likes?: Prisma.likesUncheckedCreateNestedManyWithoutPostsInput
@@ -315,7 +315,7 @@ export type postsUncheckedCreateInput = {
 export type postsUpdateInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUpdateManyWithoutPostsNestedInput
   likes?: Prisma.likesUpdateManyWithoutPostsNestedInput
@@ -328,7 +328,7 @@ export type postsUncheckedUpdateInput = {
   user_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUncheckedUpdateManyWithoutPostsNestedInput
   likes?: Prisma.likesUncheckedUpdateManyWithoutPostsNestedInput
@@ -340,14 +340,14 @@ export type postsCreateManyInput = {
   user_id?: number | null
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
 }
 
 export type postsUpdateManyMutationInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -356,7 +356,7 @@ export type postsUncheckedUpdateManyInput = {
   user_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -370,7 +370,7 @@ export type postsCountOrderByAggregateInput = {
   user_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -384,7 +384,7 @@ export type postsMaxOrderByAggregateInput = {
   user_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -393,7 +393,7 @@ export type postsMinOrderByAggregateInput = {
   user_id?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  image_url?: Prisma.SortOrder
+  image?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
 }
 
@@ -512,7 +512,7 @@ export type postsUncheckedUpdateManyWithoutUsersNestedInput = {
 export type postsCreateWithoutCommentsInput = {
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   likes?: Prisma.likesCreateNestedManyWithoutPostsInput
   post_categories?: Prisma.post_categoriesCreateNestedManyWithoutPostsInput
@@ -524,7 +524,7 @@ export type postsUncheckedCreateWithoutCommentsInput = {
   user_id?: number | null
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   likes?: Prisma.likesUncheckedCreateNestedManyWithoutPostsInput
   post_categories?: Prisma.post_categoriesUncheckedCreateNestedManyWithoutPostsInput
@@ -549,7 +549,7 @@ export type postsUpdateToOneWithWhereWithoutCommentsInput = {
 export type postsUpdateWithoutCommentsInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   likes?: Prisma.likesUpdateManyWithoutPostsNestedInput
   post_categories?: Prisma.post_categoriesUpdateManyWithoutPostsNestedInput
@@ -561,7 +561,7 @@ export type postsUncheckedUpdateWithoutCommentsInput = {
   user_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   likes?: Prisma.likesUncheckedUpdateManyWithoutPostsNestedInput
   post_categories?: Prisma.post_categoriesUncheckedUpdateManyWithoutPostsNestedInput
@@ -570,7 +570,7 @@ export type postsUncheckedUpdateWithoutCommentsInput = {
 export type postsCreateWithoutLikesInput = {
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsCreateNestedManyWithoutPostsInput
   post_categories?: Prisma.post_categoriesCreateNestedManyWithoutPostsInput
@@ -582,7 +582,7 @@ export type postsUncheckedCreateWithoutLikesInput = {
   user_id?: number | null
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutPostsInput
   post_categories?: Prisma.post_categoriesUncheckedCreateNestedManyWithoutPostsInput
@@ -607,7 +607,7 @@ export type postsUpdateToOneWithWhereWithoutLikesInput = {
 export type postsUpdateWithoutLikesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUpdateManyWithoutPostsNestedInput
   post_categories?: Prisma.post_categoriesUpdateManyWithoutPostsNestedInput
@@ -619,7 +619,7 @@ export type postsUncheckedUpdateWithoutLikesInput = {
   user_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUncheckedUpdateManyWithoutPostsNestedInput
   post_categories?: Prisma.post_categoriesUncheckedUpdateManyWithoutPostsNestedInput
@@ -628,7 +628,7 @@ export type postsUncheckedUpdateWithoutLikesInput = {
 export type postsCreateWithoutPost_categoriesInput = {
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsCreateNestedManyWithoutPostsInput
   likes?: Prisma.likesCreateNestedManyWithoutPostsInput
@@ -640,7 +640,7 @@ export type postsUncheckedCreateWithoutPost_categoriesInput = {
   user_id?: number | null
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutPostsInput
   likes?: Prisma.likesUncheckedCreateNestedManyWithoutPostsInput
@@ -665,7 +665,7 @@ export type postsUpdateToOneWithWhereWithoutPost_categoriesInput = {
 export type postsUpdateWithoutPost_categoriesInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUpdateManyWithoutPostsNestedInput
   likes?: Prisma.likesUpdateManyWithoutPostsNestedInput
@@ -677,7 +677,7 @@ export type postsUncheckedUpdateWithoutPost_categoriesInput = {
   user_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUncheckedUpdateManyWithoutPostsNestedInput
   likes?: Prisma.likesUncheckedUpdateManyWithoutPostsNestedInput
@@ -686,7 +686,7 @@ export type postsUncheckedUpdateWithoutPost_categoriesInput = {
 export type postsCreateWithoutUsersInput = {
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsCreateNestedManyWithoutPostsInput
   likes?: Prisma.likesCreateNestedManyWithoutPostsInput
@@ -697,7 +697,7 @@ export type postsUncheckedCreateWithoutUsersInput = {
   id?: number
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
   comments?: Prisma.commentsUncheckedCreateNestedManyWithoutPostsInput
   likes?: Prisma.likesUncheckedCreateNestedManyWithoutPostsInput
@@ -738,7 +738,7 @@ export type postsScalarWhereInput = {
   user_id?: Prisma.IntNullableFilter<"posts"> | number | null
   title?: Prisma.StringFilter<"posts"> | string
   content?: Prisma.StringFilter<"posts"> | string
-  image_url?: Prisma.StringNullableFilter<"posts"> | string | null
+  image?: Prisma.StringNullableFilter<"posts"> | string | null
   created_at?: Prisma.DateTimeNullableFilter<"posts"> | Date | string | null
 }
 
@@ -746,14 +746,14 @@ export type postsCreateManyUsersInput = {
   id?: number
   title: string
   content: string
-  image_url?: string | null
+  image?: string | null
   created_at?: Date | string | null
 }
 
 export type postsUpdateWithoutUsersInput = {
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUpdateManyWithoutPostsNestedInput
   likes?: Prisma.likesUpdateManyWithoutPostsNestedInput
@@ -764,7 +764,7 @@ export type postsUncheckedUpdateWithoutUsersInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   comments?: Prisma.commentsUncheckedUpdateManyWithoutPostsNestedInput
   likes?: Prisma.likesUncheckedUpdateManyWithoutPostsNestedInput
@@ -775,7 +775,7 @@ export type postsUncheckedUpdateManyWithoutUsersInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
-  image_url?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
@@ -833,7 +833,7 @@ export type postsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   user_id?: boolean
   title?: boolean
   content?: boolean
-  image_url?: boolean
+  image?: boolean
   created_at?: boolean
   comments?: boolean | Prisma.posts$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.posts$likesArgs<ExtArgs>
@@ -847,7 +847,7 @@ export type postsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   user_id?: boolean
   title?: boolean
   content?: boolean
-  image_url?: boolean
+  image?: boolean
   created_at?: boolean
   users?: boolean | Prisma.posts$usersArgs<ExtArgs>
 }, ExtArgs["result"]["posts"]>
@@ -857,7 +857,7 @@ export type postsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   user_id?: boolean
   title?: boolean
   content?: boolean
-  image_url?: boolean
+  image?: boolean
   created_at?: boolean
   users?: boolean | Prisma.posts$usersArgs<ExtArgs>
 }, ExtArgs["result"]["posts"]>
@@ -867,11 +867,11 @@ export type postsSelectScalar = {
   user_id?: boolean
   title?: boolean
   content?: boolean
-  image_url?: boolean
+  image?: boolean
   created_at?: boolean
 }
 
-export type postsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "title" | "content" | "image_url" | "created_at", ExtArgs["result"]["posts"]>
+export type postsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "user_id" | "title" | "content" | "image" | "created_at", ExtArgs["result"]["posts"]>
 export type postsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   comments?: boolean | Prisma.posts$commentsArgs<ExtArgs>
   likes?: boolean | Prisma.posts$likesArgs<ExtArgs>
@@ -899,7 +899,7 @@ export type $postsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     user_id: number | null
     title: string
     content: string
-    image_url: string | null
+    image: string | null
     created_at: Date | null
   }, ExtArgs["result"]["posts"]>
   composites: {}
@@ -1332,7 +1332,7 @@ export interface postsFieldRefs {
   readonly user_id: Prisma.FieldRef<"posts", 'Int'>
   readonly title: Prisma.FieldRef<"posts", 'String'>
   readonly content: Prisma.FieldRef<"posts", 'String'>
-  readonly image_url: Prisma.FieldRef<"posts", 'String'>
+  readonly image: Prisma.FieldRef<"posts", 'String'>
   readonly created_at: Prisma.FieldRef<"posts", 'DateTime'>
 }
     

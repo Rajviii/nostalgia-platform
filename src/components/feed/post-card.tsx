@@ -18,7 +18,7 @@ interface PostCardProps {
     id: number;
     title: string;
     content: string;
-    image_url: string | null;
+    image: string | null;
     created_at: string;
     user: { id: number; username: string; isFollowing?: boolean } | null;
     commentsCount: number;
@@ -153,13 +153,27 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
           )}
         </div>
 
-        {post.image_url && (
-          <div className="relative mt-4 overflow-hidden rounded-[1.5rem] border border-border/30 bg-muted/50 aspect-video group/img shadow-sm">
-            <img
-              src={post.image_url}
-              alt={post.title}
-              className="object-cover w-full h-full transition-transform duration-700 group-hover/img:scale-105"
+        {post.image && (
+          <div className="relative mt-4 overflow-hidden rounded-[2rem] border border-border/30 bg-black/5 group/img shadow-md max-h-[512px] w-full flex items-center justify-center">
+            {/* Dynamic Background Blur */}
+            <div 
+              className="absolute inset-0 z-0 opacity-30 blur-2xl scale-110"
+              style={{ 
+                backgroundImage: `url(${post.image})`,
+                backgroundPosition: 'center',
+                backgroundSize: 'cover'
+              }}
             />
+            
+            {/* Main Image Layer */}
+            <img
+              src={post.image}
+              alt={post.title}
+              className="relative z-10 w-full h-auto max-h-[512px] object-contain transition-all duration-700 group-hover/img:scale-[1.02]"
+            />
+
+            {/* Premium Glass Overlay */}
+            <div className="absolute inset-0 z-20 pointer-events-none shadow-[inset_0_0_60px_rgba(0,0,0,0.05)] group-hover/img:bg-black/5 transition-all duration-500" />
           </div>
         )}
       </div>

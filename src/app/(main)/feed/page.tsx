@@ -13,7 +13,7 @@ interface Post {
   id: number;
   title: string;
   content: string;
-  image_url: string | null;
+  image: string | null;
   created_at: string;
   user: { id: number; username: string; isFollowing?: boolean } | null;
   commentsCount: number;

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 const postSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(100, "Title is too long"),
   content: z.string().min(10, "Share a bit more about this memory..."),
-  image_url: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  image: z.string().optional(),
   is_public: z.boolean(),
   tags: z.string().optional(),
 });
@@ -31,7 +31,7 @@ interface CreatePostModalProps {
     id: number;
     title: string;
     content: string;
-    image_url: string | null;
+    image: string | null;
   } | null;
 }
 
@@ -42,6 +42,8 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
   const [isPublic, setIsPublic] = useState(true);
   const [categories, setCategories] = useState<{ id: number, name: string }[]>([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const {
     register,
@@ -55,13 +57,13 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
     defaultValues: initialData ? {
       title: initialData.title,
       content: initialData.content,
-      image_url: initialData.image_url || "",
+      image: initialData.image || "",
       is_public: true,
       tags: ""
     } : {
       title: "",
       content: "",
-      image_url: "",
+      image: "",
       is_public: true,
       tags: ""
     }
@@ -86,7 +88,8 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
     if (initialData && isOpen) {
       setValue("title", initialData.title);
       setValue("content", initialData.content);
-      setValue("image_url", initialData.image_url || "");
+      setValue("image", initialData.image || "");
+      setImagePreview(initialData.image || null);
       // Fetch post categories if editing
       const fetchPostCategories = async () => {
         try {
@@ -106,6 +109,7 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
       reset();
       setIsPublic(true);
       setSelectedCategoryIds([]);
+      setImagePreview(null);
     }
   }, [initialData, isOpen, setValue, reset]);
 
@@ -113,6 +117,24 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
     setSelectedCategoryIds(prev =>
       prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id]
     );
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image is too large. Max 5MB allowed.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setValue("image", base64String);
+        setImagePreview(base64String);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const onSubmit = async (data: PostValues) => {
@@ -130,7 +152,7 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
       const payload = {
         title: data.title,
         content: data.content,
-        image_url: data.image_url,
+        image: data.image,
         user_id: user.id,
         tags: data.tags,
         categoryIds: selectedCategoryIds,
@@ -189,6 +211,36 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
               {errors.content && <p className="text-xs text-destructive mt-1">{errors.content.message}</p>}
             </div>
 
+            {imagePreview && (
+              <div className="relative w-56 h-56 rounded-2xl overflow-hidden border border-border/40 group">
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="w-full h-full object-cover"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImagePreview(null);
+                    setValue("image", "");
+                    if (imageInputRef.current) imageInputRef.current.value = "";
+                  }}
+                  className="absolute top-2 right-2 bg-black/50 text-white p-1.5 rounded-full hover:bg-black transition-colors opacity-0 group-hover:opacity-100"
+                >
+                  <Lock className="w-4 h-4 rotate-45" />
+                </button>
+              </div>
+            )}
+
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              ref={imageInputRef}
+              onChange={handleImageChange}
+            />
+
             <div className="space-y-3">
               <div className="flex items-center gap-2 border border-border/40 rounded-full px-4 py-2 max-w-sm">
                 <Hash className="w-4 h-4 text-muted-foreground" />
@@ -224,7 +276,11 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
 
         <div className="bg-secondary px-8 py-5 flex items-center justify-between border-t border-border/40 mt-6">
           <div className="flex items-center gap-4 text-muted-foreground">
-            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
+            <button
+              type="button"
+              onClick={() => imageInputRef.current?.click()}
+              className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted"
+            >
               <ImageIcon className="w-5 h-5" />
             </button>
             <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
