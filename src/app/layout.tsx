@@ -27,6 +27,9 @@ export const metadata: Metadata = {
     "old memories", "old moments", "old eras", "retro memories", "nostalgic stories"
   ],
   metadataBase: new URL("https://nostalgia-platform.vercel.app"),
+  other: {
+    "google-adsense-account": "ca-pub-5999959372429481",
+  },
 };
 
 export default function RootLayout({
