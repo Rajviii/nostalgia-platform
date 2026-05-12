@@ -10,6 +10,7 @@ export async function GET(
         const post = await prisma.posts.findUnique({
             where: { id: Number(id) },
             include: {
+                // users: true,
                 post_categories: {
                     include: {
                         categories: true

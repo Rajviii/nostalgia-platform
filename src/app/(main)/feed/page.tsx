@@ -96,8 +96,8 @@ export default function FeedPage() {
         </div>
       ) : posts.length === 0 ? (
         <div className="p-12 text-center text-muted-foreground">
-          <p className="text-lg">No memories have been shared yet.</p>
-          <p className="mt-2">Be the first to pen something beautiful.</p>
+          <p className="text-lg">{activeTab === 'all' ? 'No memories have been shared yet.' : 'Follow people to see their memories.'} </p>
+          <p className="mt-2">{activeTab === 'all' ? 'Be the first to pen something beautiful.' : 'No memories from people you follow yet.'} </p>
         </div>
       ) : (
         <div className="flex flex-col gap-6 p-8 pt-6">

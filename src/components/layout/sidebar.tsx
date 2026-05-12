@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, User, Bell, LogOut, Plus, Timer, Flame, SunMoon, } from "lucide-react";
+import { Home, User, Bell, LogOut, Plus, Timer, Flame, SunMoon, Images } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Typography } from "@/components/ui/typography";
 import { useAuth } from "@/lib/auth-context";
@@ -15,6 +15,7 @@ export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () 
 
   const links = [
     { name: "Home", href: "/feed", icon: Home },
+    { name: "Memory Wall", href: "/memory-wall", icon: Images },
     { name: "Nextalgia", href: "/nextalgia", icon: Timer },
     { name: "Notifications", href: "/notifications", icon: Bell },
     { name: "Profile", href: `/profile/${user?.id || ''}`, icon: User },

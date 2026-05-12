@@ -41,7 +41,7 @@ export async function POST(request: Request) {
 
         if (tags && typeof tags === "string") {
             const tagNames = tags.split(",").map(t => t.trim().toLowerCase()).filter(t => t.length > 0);
-            
+
             for (const name of tagNames) {
                 const slug = name.replace(/\s+/g, '-').replace(/[^\w-]/g, '');
                 const category = await prisma.categories.upsert({
