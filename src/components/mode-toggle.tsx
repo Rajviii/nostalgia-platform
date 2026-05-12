@@ -23,11 +23,20 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
+        {/* <DropdownMenuItem onClick={() => setTheme("light")}>
+          Yours Truly
+        </DropdownMenuItem> */}
         <DropdownMenuItem onClick={() => setTheme("dark")}>
           Dark
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => setTheme("positions")}>
+          Hour Glass Right
+        </DropdownMenuItem>
+        {/* <DropdownMenuItem onClick={() => setTheme("thank-u-next")}>
+          Thank u, Next
+        </DropdownMenuItem> */}
+        <DropdownMenuItem onClick={() => setTheme("hours-glass-left")}>
+          Hour Glass Left
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
           System
