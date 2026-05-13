@@ -49,7 +49,8 @@ export default function NextalgiaPage() {
     return (
         <div className="w-full">
             <div className="sticky top-0 z-20 bg-background px-8 pt-8 pb-6 flex flex-col gap-6 border-b border-border/40">
-                <div className="flex items-center justify-between">
+                <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 sm:mb-16 gap-4">
+
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <History className="w-6 h-6 text-foreground" />
@@ -58,7 +59,7 @@ export default function NextalgiaPage() {
                         <p className="text-muted-foreground text-sm">Digital time capsules for the things you want to remember — later.</p>
                     </div>
                     <CreateCapsuleModal onCapsuleCreated={fetchCapsules} />
-                </div>
+                </header>
 
                 <div className="flex items-center gap-2 bg-[#efede6]/50 p-1 rounded-full border border-border/40 w-fit">
                     <button
@@ -106,7 +107,7 @@ function EmptyState() {
                     <div key={i} className="border border-foreground" />
                 ))}
             </div>
-            
+
             <div className="w-24 h-24 rounded-full bg-secondary flex items-center justify-center mb-8 shadow-xl border border-border/50 group-hover:scale-110 transition-transform duration-500">
                 <History className="w-10 h-10 text-primary" />
             </div>

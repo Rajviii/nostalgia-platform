@@ -14,7 +14,7 @@ export default function NotificationsPage() {
 
     const fetchNotifications = useCallback(async () => {
         if (!user?.id) return;
-        
+
         try {
             const res = await fetch(`/api/notifications?userId=${user.id}`);
             const data = await res.json();
@@ -41,7 +41,7 @@ export default function NotificationsPage() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ notificationId: id })
             });
-            setNotifications(prev => 
+            setNotifications(prev =>
                 prev.map(n => n.id === id ? { ...n, is_read: true } : n)
             );
         } catch (error) {
@@ -83,7 +83,9 @@ export default function NotificationsPage() {
     return (
         <div className="w-full">
             <div className="sticky top-0 z-20 bg-background px-8 pt-8 pb-6 flex flex-col gap-6 border-b border-border/40">
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between"> */}
+                <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 sm:mb-16 gap-4">
+
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <Bell className="w-6 h-6 text-foreground" />
@@ -91,25 +93,28 @@ export default function NotificationsPage() {
                         </div>
                         <p className="text-muted-foreground text-sm">Stay updated with your nostalgia network.</p>
                     </div>
-                    {notifications.some(n => !n.is_read) && (
-                        <Button 
-                            onClick={handleMarkAllAsRead}
-                            variant="outline"
-                            className="rounded-full gap-2 transition-colors group font-medium"
-                        >
-                            <CheckCheck className="w-4 h-4 text-foreground group-hover:scale-110 transition-transform" />
-                            Mark all as read
-                        </Button>
-                    )}
-                </div>
+                    <div>
+                        {notifications.some(n => !n.is_read) && (
+                            <Button
+                                onClick={handleMarkAllAsRead}
+                                variant="outline"
+                                className="rounded-full gap-2 transition-colors group font-medium"
+                            >
+                                <CheckCheck className="w-4 h-4 text-foreground group-hover:scale-110 transition-transform" />
+                                Mark all as read
+                            </Button>
+                        )}
+                    </div>
+                </header>
+                {/* </div> */}
             </div>
 
             <div className="p-8 pt-6">
                 {notifications.length > 0 ? (
                     <div className="grid gap-4 max-w-3xl animate-in fade-in slide-in-from-bottom-4 duration-700">
                         {notifications.map((notification) => (
-                            <NotificationItem 
-                                key={notification.id} 
+                            <NotificationItem
+                                key={notification.id}
                                 notification={notification}
                                 onMarkAsRead={handleMarkAsRead}
                                 onDelete={handleDelete}
