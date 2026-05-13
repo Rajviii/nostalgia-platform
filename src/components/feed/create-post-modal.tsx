@@ -43,6 +43,7 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
   const [categories, setCategories] = useState<{ id: number, name: string }[]>([]);
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [showAllTags, setShowAllTags] = useState(false);
   const imageInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -183,12 +184,14 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[600px] bg-card text-foreground border border-border/40 shadow-xl rounded-[2rem] p-0 overflow-hidden gap-0">
-        <div className="p-8 pb-4">
-          <h2 className="text-2xl font-bold mb-6 font-serif tracking-tight">
+      <DialogContent className="sm:max-w-[600px] max-h-[95vh] bg-card text-foreground border border-border/40 shadow-xl rounded-[2.5rem] p-0 overflow-hidden gap-0 flex flex-col">
+        <div className="p-8 pb-4 flex-shrink-0">
+          <h2 className="text-2xl font-bold font-serif tracking-tight">
             {initialData ? "Edit Memory" : "Write a Memory"}
           </h2>
+        </div>
 
+        <div className="flex-1 overflow-y-auto px-8 pb-4 custom-scrollbar">
           <form id="post-form" onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <input
@@ -212,11 +215,11 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
             </div>
 
             {imagePreview && (
-              <div className="relative w-56 h-56 rounded-2xl overflow-hidden border border-border/40 group">
+              <div className="relative w-full max-w-[320px] rounded-2xl overflow-hidden border border-border/40 group mb-4">
                 <img
                   src={imagePreview}
                   alt="Preview"
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto max-h-[300px] object-contain bg-muted/20"
                 />
 
                 <button
@@ -252,8 +255,8 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
               </div>
 
               {categories.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {categories.map(cat => (
+                <div className="flex flex-wrap gap-2 items-center">
+                  {(showAllTags ? categories : categories.slice(0, 5)).map(cat => (
                     <button
                       key={cat.id}
                       type="button"
@@ -268,28 +271,41 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
                       {cat.name}
                     </button>
                   ))}
+                  {categories.length > 5 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowAllTags(!showAllTags)}
+                      className="text-xs font-bold text-primary hover:underline px-2 py-1"
+                    >
+                      {showAllTags ? "Show less" : `+${categories.length - 5} more`}
+                    </button>
+                  )}
                 </div>
               )}
             </div>
           </form>
         </div>
 
-        <div className="bg-secondary px-8 py-5 flex items-center justify-between border-t border-border/40 mt-6">
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <button
-              type="button"
-              onClick={() => imageInputRef.current?.click()}
-              className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted"
-            >
-              <ImageIcon className="w-5 h-5" />
-            </button>
-            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
-              <Smile className="w-5 h-5" />
-            </button>
-            <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
-              <MapPin className="w-5 h-5" />
-            </button>
-            <div className="h-6 w-px bg-border/60 mx-1" />
+        <div className="bg-secondary/50 px-6 py-5 sm:px-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between border-t border-border/40 flex-shrink-0 gap-4">
+          <div className="flex items-center justify-between sm:justify-start gap-4 text-muted-foreground">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <button
+                type="button"
+                onClick={() => imageInputRef.current?.click()}
+                className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted"
+              >
+                <ImageIcon className="w-5 h-5" />
+              </button>
+              <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
+                <Smile className="w-5 h-5" />
+              </button>
+              <button type="button" className="hover:text-foreground transition-colors p-2 rounded-full hover:bg-muted">
+                <MapPin className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <div className="h-6 w-px bg-border/60 mx-1 hidden sm:block" />
+            
             <button
               type="button"
               onClick={() => {
@@ -297,21 +313,21 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
                 setIsPublic(newValue);
                 setValue("is_public", newValue);
               }}
-              className={`flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-colors px-3 py-1.5 rounded-full ${isPublic ? 'text-primary bg-primary/20' : 'text-muted-foreground bg-muted'}`}
+              className={`flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider transition-colors px-3 py-1.5 rounded-full ${isPublic ? 'text-primary bg-primary/20' : 'text-muted-foreground bg-muted'}`}
             >
               {isPublic ? <Globe className="w-3.5 h-3.5" /> : <Lock className="w-3.5 h-3.5" />}
               {isPublic ? 'Public' : 'Private'}
             </button>
           </div>
 
-          <div className="flex items-center gap-3">
-            <Button type="button" variant="ghost" onClick={onClose} disabled={isLoading} className="font-medium hover:bg-transparent hover:underline text-muted-foreground">
+          <div className="flex items-center justify-end gap-3 border-t sm:border-none border-border/20 pt-4 sm:pt-0">
+            <Button type="button" variant="ghost" onClick={onClose} disabled={isLoading} className="font-medium hover:bg-transparent hover:underline text-muted-foreground text-sm">
               Cancel
             </Button>
             <Button
               type="submit"
               form="post-form"
-              className="rounded-full px-6 bg-[#222] hover:bg-black text-white font-medium shadow-xl"
+              className="rounded-full px-8 bg-[#222] hover:bg-black text-white font-medium shadow-xl text-sm py-5"
               disabled={isLoading}
             >
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
