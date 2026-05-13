@@ -13,6 +13,18 @@ export default function MemoryWallPage() {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [chunkSize, setChunkSize] = useState(6);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) setChunkSize(2);
+      else if (window.innerWidth < 1024) setChunkSize(4);
+      else setChunkSize(6);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const fetchPosts = async () => {
     try {
@@ -33,7 +45,7 @@ export default function MemoryWallPage() {
   }, [user]);
 
   return (
-    <main className="min-h-screen bg-background text-white p-8 relative overflow-hidden">
+    <main className="min-h-screen bg-background text-white p-4 sm:p-8 relative overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 z-0 opacity-40">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-[#1a1a1a] to-black" />
@@ -41,14 +53,14 @@ export default function MemoryWallPage() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        <header className="flex justify-between items-center mb-16">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 sm:mb-16 gap-4">
           <div>
-            <Typography variant="h1" serif className="text-5xl mb-2 text-[#f3e9dc]">My Wall</Typography>
-            <p className="text-[#a8dadc]/60 font-medium tracking-wide">A collection of your photo memories.</p>
+            <Typography variant="h1" serif className="text-3xl sm:text-5xl mb-2 text-[#f3e9dc]">My Wall</Typography>
+            <p className="text-[#a8dadc]/60 font-medium tracking-wide text-sm sm:text-base">A collection of your photo memories.</p>
           </div>
           <Button
             onClick={() => setIsModalOpen(true)}
-            className="rounded-full bg-[#f3e9dc] text-black hover:bg-white transition-all shadow-lg shadow-white/5 px-6 gap-2"
+            className="rounded-full bg-[#f3e9dc] text-black hover:bg-white transition-all shadow-lg shadow-white/5 px-6 gap-2 text-sm sm:text-base py-5 sm:py-2 w-full sm:w-auto"
             aria-label="Add Memory"
           >
             <Plus className="w-5 h-5" />
@@ -58,7 +70,7 @@ export default function MemoryWallPage() {
 
         {/* The Hanging String */}
         {/* Hanging Strings Container */}
-        <div className="mt-12 space-y-32">
+        <div className="mt-8 sm:mt-12 space-y-20 sm:space-y-32">
           {loading ? (
             <div className="flex items-center justify-center h-64">
               <div className="animate-pulse flex flex-col items-center gap-4">
@@ -75,16 +87,16 @@ export default function MemoryWallPage() {
           ) : (
             (() => {
               const chunkedPosts = [];
-              for (let i = 0; i < posts.length; i += 6) {
-                chunkedPosts.push(posts.slice(i, i + 6));
+              for (let i = 0; i < posts.length; i += chunkSize) {
+                chunkedPosts.push(posts.slice(i, i + chunkSize));
               }
 
               return chunkedPosts.map((chunk, stringIndex) => (
                 <div key={stringIndex} className="relative w-full">
                   {/* SVG for the curved string */}
-                  <svg className="absolute top-0 left-0 w-full h-40 pointer-events-none overflow-visible z-0" viewBox="0 0 1000 100" preserveAspectRatio="none">
+                  <svg className={`absolute top-0 left-0 w-full ${chunkSize <= 2 ? 'h-24' : 'h-40'} pointer-events-none overflow-visible z-0`} viewBox="0 0 1000 100" preserveAspectRatio="none">
                     <path
-                      d="M0,20 Q500,100 1000,20"
+                      d={chunkSize <= 2 ? "M0,10 Q500,60 1000,10" : "M0,20 Q500,100 1000,20"}
                       fill="none"
                       stroke="rgba(255,255,255,0.1)"
                       strokeWidth="1.5"
@@ -93,12 +105,12 @@ export default function MemoryWallPage() {
                   </svg>
 
                   {/* Photos on this string */}
-                  <div className="relative z-10 flex justify-center gap-6 px-10 pt-4">
+                  <div className="relative z-10 flex justify-center gap-3 sm:gap-6 px-2 sm:px-10 pt-4">
                     {chunk.map((post, index) => {
                       // Calculate a slight vertical offset to follow the curve
                       const mid = (chunk.length - 1) / 2;
                       const distFromMid = Math.abs(index - mid);
-                      const offsetY = distFromMid * distFromMid * 6; // Parabolic curve
+                      const offsetY = distFromMid * distFromMid * (chunkSize <= 2 ? 25 : 6); // Parabolic curve
 
                       return (
                         <div key={post.id} style={{ transform: `translateY(${offsetY}px)` }}>
