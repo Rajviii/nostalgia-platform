@@ -9,7 +9,7 @@ import { useAuth } from "@/lib/auth-context";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 
-export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () => void, hideLogo?: boolean }) {
+export function Sidebar({ onCreatePost, hideLogo = false, onNavigate }: { onCreatePost?: () => void, hideLogo?: boolean, onNavigate?: () => void }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
@@ -43,6 +43,7 @@ export function Sidebar({ onCreatePost, hideLogo = false }: { onCreatePost?: () 
             <Link
               key={link.name}
               href={link.href}
+              onClick={onNavigate}
               className={cn(
                 "flex items-center gap-4 px-4 py-3 rounded-full transition-all duration-200 group font-medium",
                 isActive

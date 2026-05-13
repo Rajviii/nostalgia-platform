@@ -62,7 +62,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
               <Sidebar hideLogo onCreatePost={() => {
                 setIsCreatePostOpen(true);
                 setIsMobileMenuOpen(false);
-              }} />
+              }} onNavigate={() => setIsMobileMenuOpen(false)} />
             </div>
           </div>
         )}
