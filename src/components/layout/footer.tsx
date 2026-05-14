@@ -42,23 +42,18 @@ export function Footer() {
             </Typography>
             <ul className="space-y-4">
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="#explore" className="text-muted-foreground hover:text-primary transition-colors">
                   Memories Feed
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Retro Era
+                <Link href="#categories" className="text-muted-foreground hover:text-primary transition-colors">
+                  Journey through eras
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Childhood Tales
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                  Old Tech
+                <Link href="#shared-feelings" className="text-muted-foreground hover:text-primary transition-colors">
+                  Shared Feelings
                 </Link>
               </li>
             </ul>
@@ -69,13 +64,13 @@ export function Footer() {
               Community
             </Typography>
             <ul className="space-y-4">
-              <li>
+              {/* <li>
                 <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                   Join Discord
                 </Link>
-              </li>
+              </li> */}
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="#winners" className="text-muted-foreground hover:text-primary transition-colors">
                   Weekly Winners
                 </Link>
               </li>
@@ -84,11 +79,11 @@ export function Footer() {
                   Hall of Fame
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                   Contributor Guidelines
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -97,28 +92,33 @@ export function Footer() {
               Company
             </Typography>
             <ul className="space-y-4">
-              <li>
+              {/* <li>
                 <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                   Our Story
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                   Privacy Policy
                 </Link>
-              </li>
+              </li> */}
               <li>
+                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
+                  About
+                </Link>
+              </li>
+              {/* <li>
                 <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
                   Terms of Service
                 </Link>
-              </li>
+              </li> */}
               <li>
-                <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
+                <a href="mailto:hello@nostalgiaplatform.com" className="text-muted-foreground hover:text-primary transition-colors">
                   Contact Us
-                </Link>
+                </a>
               </li>
               <li>
-                <Link href="/privacy-policy">
+                <Link href="/privacy-policy" className="text-muted-foreground hover:text-primary transition-colors">
                   Privacy Policy
                 </Link>
               </li>

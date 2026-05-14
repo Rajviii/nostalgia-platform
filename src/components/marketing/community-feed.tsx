@@ -1,41 +1,33 @@
 "use client";
 
+import * as React from "react";
 import { motion } from "framer-motion";
 import { Section } from "@/components/ui/section";
 import { Typography } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, MessageCircle, MoreHorizontal, Bookmark } from "lucide-react";
 
-const FEED_PREVIEWS = [
-  {
-    user: "RetroGamer92",
-    avatar: "RG",
-    content: "Who remembers the sound of a dial-up modem? 📞 That 30 seconds of screeching noise was the gateway to a whole new world.",
-    time: "2h ago",
-    likes: "4.2k",
-    comments: 120,
-  },
-  {
-    user: "OldSchoolCool",
-    avatar: "OS",
-    content: "Found my old Discman today. The 10-second skip protection was the pinnacle of technology back then! 💿",
-    time: "5h ago",
-    likes: "2.8k",
-    comments: 85,
-  },
-  {
-    user: "NostalgicSoul",
-    avatar: "NS",
-    content: "Saturday morning breakfasts and Tom & Jerry. Life was so much simpler. 🥞🐱🐭",
-    time: "1d ago",
-    likes: "12k",
-    comments: 450,
-  }
-];
-
 export function CommunityFeed() {
+  const [posts, setPosts] = React.useState<any[]>([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("/api/feed/text-only");
+        const data = await res.json();
+        setPosts(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Failed to fetch community feed:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
+
   return (
-    <Section className="overflow-hidden">
+    <Section className="overflow-hidden" id="shared-feelings">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
         <div>
           <Typography as="h2" variant="h2" serif className="border-none p-0 mb-6">
@@ -67,48 +59,54 @@ export function CommunityFeed() {
         <div className="relative">
           {/* Feed Preview UI */}
           <div className="space-y-4">
-            {FEED_PREVIEWS.map((post, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.2 }}
-              >
-                <Card className="border-none shadow-xl shadow-black/5 dark:shadow-white/5">
-                  <CardContent className="p-6">
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center font-bold text-xs text-secondary-foreground">
-                          {post.avatar}
+            {loading ? (
+              Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="h-40 w-full rounded-3xl bg-muted/20 animate-pulse border border-border/50" />
+              ))
+            ) : (
+              posts.map((post, i) => (
+                <motion.div
+                  key={post.id || i}
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.2 }}
+                >
+                  <Card className="border-none shadow-xl shadow-black/5 dark:shadow-white/5">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center font-bold text-xs text-secondary-foreground">
+                            {post.avatar}
+                          </div>
+                          <div>
+                            <Typography className="font-bold text-sm leading-none">{post.user}</Typography>
+                            <Typography variant="muted" className="text-[10px]">{post.time}</Typography>
+                          </div>
                         </div>
-                        <div>
-                          <Typography className="font-bold text-sm leading-none">{post.user}</Typography>
-                          <Typography variant="muted" className="text-[10px]">{post.time}</Typography>
-                        </div>
+                        <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                    <Typography className="mb-4 text-sm leading-relaxed whitespace-pre-wrap">
-                      {post.content}
-                    </Typography>
-                    <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
-                          <Heart className="h-4 w-4" />
-                          <span className="text-xs">{post.likes}</span>
+                      <Typography className="mb-4 text-sm leading-relaxed whitespace-pre-wrap">
+                        {post.content}
+                      </Typography>
+                      <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <Heart className="h-4 w-4" />
+                            <span className="text-xs">{post.likes}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-muted-foreground">
+                            <MessageCircle className="h-4 w-4" />
+                            <span className="text-xs">{post.comments}</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-1.5 text-muted-foreground">
-                          <MessageCircle className="h-4 w-4" />
-                          <span className="text-xs">{post.comments}</span>
-                        </div>
+                        <Bookmark className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <Bookmark className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))
+            )}
           </div>
 
           {/* Decorative blurred blob */}

@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model comments {
+  id        Int       @id @default(autoincrement())
+  post_id   Int?
+  user_id   Int?
+  content   String
+  create_at DateTime? @default(now()) @db.Timestamp(6)
+  posts     posts?    @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users     users?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model follows {
+  id                                Int       @id @default(autoincrement())
+  follower_id                       Int?
+  following_id                      Int?
+  create_at                         DateTime? @default(now()) @db.Timestamp(6)
+  users_follows_follower_idTousers  users?    @relation("follows_follower_idTousers", fields: [follower_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_follows_following_idTousers users?    @relation("follows_following_idTousers", fields: [following_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([follower_id, following_id])
+}
+
+model likes {
+  id        Int       @id @default(autoincrement())
+  user_id   Int?
+  post_id   Int?
+  create_at DateTime? @default(now()) @db.Timestamp(6)
+  posts     posts?    @relation(fields: [post_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users     users?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, post_id])
+}
+
+model posts {
+  id              Int               @id @default(autoincrement())
+  user_id         Int?
+  title           String            @db.VarChar(255)
+  content         String
+  image           String?
+  created_at      DateTime?         @default(now()) @db.Timestamp(6)
+  comments        comments[]
+  likes           likes[]
+  post_categories post_categories[]
+  users           users?            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model categories {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique @db.VarChar(100)
+  slug            String            @unique @db.VarChar(100)
+  created_at      DateTime?         @default(now()) @db.Timestamp(6)
+  post_categories post_categories[]
+}
+
+model post_categories {
+  post_id     Int
+  category_id Int
+  categories  categories @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  posts       posts      @relation(fields: [post_id], references: [id], onDelete: Cascade)
+
+  @@id([post_id, category_id])
+}
+
+model users {
+  id                                          Int             @id @default(autoincrement())
+  username                                    String          @db.VarChar(50)
+  email                                       String          @unique @db.VarChar(100)
+  created_at                                  DateTime?       @default(now()) @db.Timestamp(6)
+  password                                    String          @default("")
+  comments                                    comments[]
+  follows_follows_follower_idTousers          follows[]       @relation("follows_follower_idTousers")
+  follows_follows_following_idTousers         follows[]       @relation("follows_following_idTousers")
+  likes                                       likes[]
+  notifications_notifications_actor_idTousers notifications[] @relation("notifications_actor_idTousers")
+  notifications_notifications_user_idTousers  notifications[] @relation("notifications_user_idTousers")
+  posts                                       posts[]
+  time_capsules                               time_capsules[]
+}
+
+model notifications {
+  id                                  Int               @id @default(autoincrement())
+  user_id                             Int
+  actor_id                            Int?
+  type                                notification_type
+  title                               String?
+  message                             String?
+  entity_id                           Int?
+  entity_type                         String?           @db.VarChar(50)
+  is_read                             Boolean?          @default(false)
+  created_at                          DateTime?         @default(now()) @db.Timestamp(6)
+  users_notifications_actor_idTousers users?            @relation("notifications_actor_idTousers", fields: [actor_id], references: [id], onUpdate: NoAction)
+  users_notifications_user_idTousers  users             @relation("notifications_user_idTousers", fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc)], map: "idx_notifications_created_at")
+  @@index([is_read], map: "idx_notifications_is_read")
+  @@index([user_id], map: "idx_notifications_user_id")
+}
+
+model time_capsules {
+  id             Int       @id @default(autoincrement())
+  user_id        Int
+  title          String?
+  content        String
+  media_url      String?
+  created_at     DateTime? @default(now()) @db.Timestamp(6)
+  unlock_at      DateTime  @db.Timestamp(6)
+  is_unlocked    Boolean?  @default(false)
+  is_public      Boolean?  @default(false)
+  allow_comments Boolean?  @default(true)
+  mood           String?
+  users          users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_user")
+
+  @@index([unlock_at], map: "idx_unlock_time")
+  @@index([user_id], map: "idx_user_capsules")
+}
+
+enum notification_type {
+  like
+  comment
+  follow
+  system
+}

@@ -13,10 +13,15 @@ export function Hero() {
 
   return (
     <>
-      <section className="relative min-h-[90vh] flex items-center pt-20 overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-center pt-12 pb-16 overflow-hidden">
         {/* Background Decorative Elements */}
-        <div className="absolute top-1/4 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03] mix-blend-difference z-0"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,var(--tw-gradient-stops))] from-primary/5 via-background to-background pointer-events-none" />
+        <div className="absolute top-1/4 -left-20 w-72 h-72 bg-primary/20 rounded-full blur-[100px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-secondary/20 rounded-full blur-[120px]" style={{ animation: 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
 
         <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
@@ -50,9 +55,9 @@ export function Hero() {
               >
                 Explore Memories <ArrowRight className="h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" className="rounded-full px-8 gap-2">
+              {/* <Button size="lg" variant="outline" className="rounded-full px-8 gap-2">
                 <Play className="h-4 w-4 fill-current" /> Watch Our Story
-              </Button>
+              </Button> */}
             </div>
 
 
@@ -69,11 +74,12 @@ export function Hero() {
                   </div>
                 ))}
                 <div className="w-10 h-10 rounded-full border-2 border-background bg-primary flex items-center justify-center text-[10px] font-bold text-primary-foreground">
-                  +2k
+                  +♡
                 </div>
               </div>
               <Typography variant="small" className="text-muted-foreground">
-                Joined by <span className="text-foreground font-bold">2,400+</span> nostalgic souls this week
+                Be a part of timeless memories
+                {/* Joined by <span className="text-foreground font-bold">2,400+</span> nostalgic souls this week */}
               </Typography>
             </div>
           </motion.div>
@@ -147,6 +153,61 @@ export function Hero() {
               </motion.div>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* How it works section */}
+      <section className="py-16 md:py-24 bg-muted/20 border-y border-border/40 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+          <div className="text-center mb-16">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+            >
+              <Typography variant="h3" serif className="text-3xl md:text-4xl mb-4 text-foreground">
+                How it works
+              </Typography>
+              <Typography className="text-muted-foreground max-w-xl mx-auto">
+                Three simple steps to start curating your personal nostalgia sanctuary.
+              </Typography>
+            </motion.div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "01",
+                title: "Create your space",
+                desc: "Set up your profile and choose an era that resonates with your memories."
+              },
+              {
+                step: "02",
+                title: "Share moments",
+                desc: "Upload photos, write thoughts, and pin them to your personal memory wall."
+              },
+              {
+                step: "03",
+                title: "Connect & explore",
+                desc: "Discover shared nostalgia from others and build meaningful connections."
+              }
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: i * 0.1 }}
+                className="flex flex-col items-center text-center p-8 rounded-3xl bg-background/50 border border-border/50 backdrop-blur-sm hover:bg-muted/50 transition-colors duration-300"
+              >
+                <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold font-serif text-xl mb-6">
+                  {item.step}
+                </div>
+                <Typography variant="h4" className="mb-3 text-foreground">{item.title}</Typography>
+                <Typography className="text-muted-foreground">{item.desc}</Typography>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 

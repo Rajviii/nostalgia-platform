@@ -8,8 +8,8 @@ export const TRENDING_MEMORIES = [
     title: "The Summer of '98 Cricket",
     story: "Nothing beats the feeling of playing street cricket until the street lights came on. The sound of a tennis ball hitting a plastic bat was our soundtrack.",
     category: "Sports",
-    likes: 1240,
-    comments: 89,
+    likes: 5,
+    comments: 1,
     image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?w=800&q=80",
     tags: ["Cricket", "Summer", "Childhood"],
   },
@@ -106,6 +106,6 @@ export const WEEKLY_WINNER = {
   story: "My grandfather had this old valve radio. Every evening, the family would gather around it to hear the news and stories. There was no internet, no distractions, just voices and imagination. In a world full of screens, I miss that simple connection.",
   likes: 4500,
   comments: 320,
-  image: "https://images.unsplash.com/photo-1558979158-65a1eaa12a21?w=1200&q=80",
+  image: "/Petal.png",
   date: "October 24, 2023",
 };
