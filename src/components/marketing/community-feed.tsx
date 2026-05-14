@@ -6,6 +6,32 @@ import { Section } from "@/components/ui/section";
 import { Typography } from "@/components/ui/typography";
 import { Card, CardContent } from "@/components/ui/card";
 import { Heart, MessageCircle, MoreHorizontal, Bookmark } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+function FeedContent({ content }: { content: string }) {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const isLong = content.length > 300;
+
+  return (
+    <div className="mb-4">
+      <div 
+        className={cn(
+          "tiptap-content text-sm leading-relaxed prose prose-sm dark:prose-invert max-w-none break-words",
+          !isExpanded && isLong && "line-clamp-4"
+        )}
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+      {isLong && (
+        <button 
+          onClick={() => setIsExpanded(!isExpanded)}
+          className="text-primary text-xs font-bold mt-2 hover:underline focus:outline-none"
+        >
+          {isExpanded ? "Show less" : "Show more"}
+        </button>
+      )}
+    </div>
+  );
+}
 
 export function CommunityFeed() {
   const [posts, setPosts] = React.useState<any[]>([]);
@@ -86,9 +112,7 @@ export function CommunityFeed() {
                         </div>
                         <MoreHorizontal className="h-4 w-4 text-muted-foreground" />
                       </div>
-                      <Typography className="mb-4 text-sm leading-relaxed whitespace-pre-wrap">
-                        {post.content}
-                      </Typography>
+                      <FeedContent content={post.content} />
                       <div className="flex items-center justify-between pt-4 border-t border-border/50">
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1.5 text-muted-foreground">
