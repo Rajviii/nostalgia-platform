@@ -10,7 +10,7 @@ import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
 import { Loader2, Image as ImageIcon, Smile, MapPin, Hash, Globe, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import TextareaAutosize from "react-textarea-autosize";
+import { RichTextEditor } from "@/components/ui/rich-text-editor";
 import { cn } from "@/lib/utils";
 
 const postSchema = z.object({
@@ -204,12 +204,10 @@ export function CreatePostModal({ isOpen, onClose, onSuccess, initialData }: Cre
             </div>
 
             <div>
-              <TextareaAutosize
-                id="content"
+              <RichTextEditor
+                value={watch("content") || ""}
+                onChange={(val) => setValue("content", val, { shouldValidate: true })}
                 placeholder="What's on your mind?"
-                minRows={4}
-                className="w-full bg-transparent text-[15px] resize-none placeholder:text-muted-foreground/50 border-none outline-none focus:ring-0 px-0 leading-relaxed"
-                {...register("content")}
               />
               {errors.content && <p className="text-xs text-destructive mt-1">{errors.content.message}</p>}
             </div>

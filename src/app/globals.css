@@ -241,3 +241,58 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.3);
 }
+
+/* Tiptap Editor Styles */
+.tiptap-container .ProseMirror {
+  min-height: 120px;
+  outline: none;
+}
+
+.tiptap-container .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: hsl(var(--muted-foreground) / 0.5);
+  pointer-events: none;
+  height: 0;
+}
+
+.tiptap-content table,
+.tiptap-container table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.tiptap-content table td,
+.tiptap-content table th,
+.tiptap-container table td,
+.tiptap-container table th {
+  min-width: 1em;
+  border: 1px solid hsl(var(--border));
+  padding: 8px;
+  vertical-align: top;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.tiptap-content table th,
+.tiptap-container table th {
+  font-weight: bold;
+  text-align: left;
+  background-color: hsl(var(--secondary) / 0.5);
+}
+
+.tiptap-content table .selectedCell:after,
+.tiptap-container table .selectedCell:after {
+  z-index: 2;
+  position: absolute;
+  content: "";
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: hsl(var(--primary) / 0.1);
+  pointer-events: none;
+}

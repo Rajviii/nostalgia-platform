@@ -4,7 +4,8 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatDistanceToNow } from "date-fns";
-import { Heart, MessageCircle, Share2, MoreHorizontal } from "lucide-react";
+import { Heart, MessageCircle, Share2, MoreHorizontal, Edit2 } from "lucide-react";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
@@ -126,17 +127,37 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-full h-8 w-8">
-            <MoreHorizontal className="w-5 h-5" />
-          </Button>
+          {isOwner ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-full h-8 w-8 outline-none">
+                  <MoreHorizontal className="w-5 h-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40 rounded-xl p-2 border-border/40 shadow-xl bg-card">
+                <DropdownMenuItem
+                  onClick={() => onEdit && onEdit(post)}
+                  className="rounded-lg cursor-pointer text-sm font-medium p-2 focus:bg-secondary flex items-center"
+                >
+                  <Edit2 className="w-4 h-4 mr-2" />
+                  Edit Memory
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-full h-8 w-8 outline-none">
+              <MoreHorizontal className="w-5 h-5" />
+            </Button>
+          )}
         </div>
       </div>
 
       <div className="mt-5 space-y-3">
         <Typography variant="h3" serif className="text-[22px] font-bold leading-tight">{post.title}</Typography>
-        <Typography className="text-muted-foreground text-[15px] leading-relaxed whitespace-pre-wrap">
-          {post.content}
-        </Typography>
+        <div
+          className="tiptap-content whitespace-pre-wrap text-muted-foreground text-[15px] leading-relaxed prose prose-sm dark:prose-invert max-w-none break-words"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
 
         <div className="flex flex-wrap gap-2 pt-2">
           {post.categories && post.categories.length > 0 ? (
@@ -156,15 +177,15 @@ export function PostCard({ post, onLike, onCommentClick, onEdit }: PostCardProps
         {post.image && (
           <div className="relative mt-4 overflow-hidden rounded-[2rem] border border-border/30 bg-black/5 group/img shadow-md max-h-[512px] w-full flex items-center justify-center">
             {/* Dynamic Background Blur */}
-            <div 
+            <div
               className="absolute inset-0 z-0 opacity-30 blur-2xl scale-110"
-              style={{ 
+              style={{
                 backgroundImage: `url(${post.image})`,
                 backgroundPosition: 'center',
                 backgroundSize: 'cover'
               }}
             />
-            
+
             {/* Main Image Layer */}
             <img
               src={post.image}
